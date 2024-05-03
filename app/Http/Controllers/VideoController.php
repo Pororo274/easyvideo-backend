@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\Format\Video\X264;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class VideoController extends Controller
 {
@@ -27,5 +30,27 @@ class VideoController extends Controller
         }
 
         return response()->json($asset);
+    }
+
+    public function render(Request $request): JsonResponse
+    {
+        $media = $request->input('medias')[0];
+        $node = $request->input('nodes')[0];
+
+        $asset = Asset::query()->where('client_id', $media['clientId'])->first();
+        $assetName = basename(Storage::disk('local')->path($asset->path));
+
+        FFMpeg::fromDisk('local')
+            ->open($asset->path)
+            ->export()
+            ->toDisk('local')
+            ->inFormat(new X264('aac'))
+            ->addFilter('-ss', TimeCode::fromSeconds($node['videoStartWith']))
+            ->addFilter('-to', TimeCode::fromSeconds($node['currentVideoDuration']))
+            ->save('outputs/' . $assetName);
+
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }

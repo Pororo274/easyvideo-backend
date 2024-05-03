@@ -10,4 +10,5 @@ Route::get('/user', function (Request $request) {
 
 Route::controller(VideoController::class)->prefix('videos')->group(function () {
     Route::post('chunk', 'uploadChunk');
+    Route::post('render', 'render');
 });
