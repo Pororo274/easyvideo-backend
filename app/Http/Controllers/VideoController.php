@@ -8,6 +8,7 @@ use FFMpeg\Format\Video\X264;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
@@ -32,25 +33,63 @@ class VideoController extends Controller
         return response()->json($asset);
     }
 
-    public function render(Request $request): JsonResponse
+    // public function render(Request $request): JsonResponse
+    // {
+    //     $media = $request->input('medias')[0];
+    //     $node = $request->input('nodes')[0];
+
+    //     $asset = Asset::query()->where('client_id', $media['clientId'])->first();
+    //     $assetName = basename(Storage::disk('local')->path($asset->path));
+
+    //     FFMpeg::fromDisk('local')
+    //         ->open($asset->path)
+    //         ->export()
+    //         ->toDisk('local')
+    //         ->inFormat(new X264('aac'))
+    //         ->addFilter('-ss', TimeCode::fromSeconds($node['videoStartWith']))
+    //         ->addFilter('-to', TimeCode::fromSeconds($node['currentVideoDuration']))
+    //         ->save('outputs/' . $assetName);
+
+    //     return response()->json([
+    //         'status' => 'success'
+    //     ]);
+    // }
+
+    public function render(Request $request)
     {
-        $media = $request->input('medias')[0];
-        $node = $request->input('nodes')[0];
 
-        $asset = Asset::query()->where('client_id', $media['clientId'])->first();
-        $assetName = basename(Storage::disk('local')->path($asset->path));
+        //TODO: pick nodes from db
+        $nodes = $request->input('nodes');
 
-        FFMpeg::fromDisk('local')
-            ->open($asset->path)
+        $assets = ['assets/input.mp4'];
+        $assetsNames = collect([
+            ['clientId' => '1234', 'streamName' => '0']
+        ]);
+        $outputExtenstion = '.mp4';
+
+
+        $ffmpeg = FFMpeg::fromDisk('local')
             ->export()
+            ->open($assets)
             ->toDisk('local')
-            ->inFormat(new X264('aac'))
-            ->addFilter('-ss', TimeCode::fromSeconds($node['videoStartWith']))
-            ->addFilter('-to', TimeCode::fromSeconds($node['currentVideoDuration']))
-            ->save('outputs/' . $assetName);
+            ->inFormat(new X264('aac'));
+
+        foreach ($nodes as $node) {
+            $nodeFilterType = $node['type'];
+
+            switch ($nodeFilterType) {
+                case 'trim':
+                    $streamName = $assetsNames->where('clientId', $node['clientId'])->first()['streamName'];
+                    $command = ['[' . $streamName . ']', 'trim=' . $node['startWith'] . ':' . $node['end'] . ',setpts=PTS-STARTPTS', '[srat]'];
+                    $ffmpeg->addFilter($command);
+                    break;
+            }
+        }
+
+        $ffmpeg->save('outputs/' . 'zalupa' . $outputExtenstion);
 
         return response()->json([
-            'status' => 'success'
+            'message' => 'Render started'
         ]);
     }
 }
