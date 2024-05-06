@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
@@ -19,6 +21,10 @@ Route::controller(ProjectController::class)->prefix('projects')->group(function 
     Route::post('render', 'render');
 });
 
-Route::controller(\App\Http\Controllers\MediaController::class)->prefix('media')->group(function () {
+Route::controller(MediaController::class)->prefix('media')->group(function () {
     Route::post('chunk', 'storeChunk');
+});
+
+Route::controller(AuthController::class)->prefix('auth')->group(function () {
+    Route::post('sign-up', 'signUp');
 });
