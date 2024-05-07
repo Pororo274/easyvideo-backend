@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Dto\Projects\CreateProjectDto;
 use App\Models\Project;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProjectRepository implements ProjectRepositoryContract
 {
@@ -17,5 +18,10 @@ class ProjectRepository implements ProjectRepositoryContract
             'fps' => $dto->fps,
             'user_id' => $dto->userId
         ]);
+    }
+
+    public function getAllByUserId(int $userId): Collection
+    {
+        return Project::query()->where('user_id', $userId)->get();
     }
 }

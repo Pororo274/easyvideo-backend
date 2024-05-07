@@ -6,6 +6,7 @@ use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Contracts\Services\ProjectServiceContract;
 use App\Dto\Projects\CreateProjectDto;
 use App\Models\Project;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProjectService implements ProjectServiceContract
 {
@@ -19,5 +20,10 @@ class ProjectService implements ProjectServiceContract
         $project = $this->projectRepo->store($dto);
 
         return $project;
+    }
+
+    public function getAllByUserId(int $userId): Collection
+    {
+        return $this->projectRepo->getAllByUserId($userId);
     }
 }

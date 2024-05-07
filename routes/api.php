@@ -16,10 +16,16 @@ Route::controller(VideoController::class)->prefix('videos')->group(function () {
     Route::post('render', 'render');
 });
 
-Route::controller(ProjectController::class)->middleware('auth:sanctum')->prefix('projects')->group(function () {
-    Route::post('', 'create');
-    Route::get('configs', 'getConfigs');
-    Route::post('render', 'render');
+Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(function () {
+    Route::prefix('users/{userId}/projects')->group(function () {
+        Route::get('', 'getAllByUserId');
+    });
+
+    Route::prefix('projects', function () {
+        Route::post('', 'create');
+        Route::get('configs', 'getConfigs');
+        Route::post('render', 'render');
+    });
 });
 
 Route::controller(MediaController::class)->prefix('media')->group(function () {

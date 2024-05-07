@@ -47,4 +47,11 @@ class ProjectController extends Controller
             'status' => 'Render started'
         ]);
     }
+
+    public function getAllByUserId(int $userId, ProjectServiceContract $projectService): JsonResponse
+    {
+        $projects = $projectService->getAllByUserId($userId);
+
+        return response()->json($projects);
+    }
 }
