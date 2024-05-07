@@ -27,4 +27,5 @@ Route::controller(MediaController::class)->prefix('media')->group(function () {
 
 Route::controller(AuthController::class)->prefix('auth')->group(function () {
     Route::post('sign-up', 'signUp');
+    Route::post('login', 'login');
 });
