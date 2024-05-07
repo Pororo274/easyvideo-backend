@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->integer('width');
             $table->integer('height');
-            //TODO: unforget add user_id key
-//            $table->foreignId('user_id')->constrained();
+            $table->integer('fps');
+            $table->string('preview')->nullable();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
