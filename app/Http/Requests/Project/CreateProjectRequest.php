@@ -15,8 +15,7 @@ class CreateProjectRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255'],
-            'height' => ['sometimes', 'integer'],
-            'width' => ['sometimes', 'integer']
+            'config' => ['required']
         ];
     }
 }

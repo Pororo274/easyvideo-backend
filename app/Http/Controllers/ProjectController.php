@@ -2,29 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\ProjectServiceContract;
+use App\Dto\Projects\CreateProjectDto;
 use App\Dto\Projects\ProjectRenderJobDto;
+use App\Enums\Projects\ProjectConfigEnum;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Http\Requests\Project\RenderRequest;
 use App\Jobs\ProjectRenderJob;
-use App\Models\Media;
-use App\Models\Project;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\Format\Video\X264;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    public function create(CreateProjectRequest $request): JsonResponse
+    public function create(CreateProjectRequest $request, ProjectServiceContract $projectService): JsonResponse
     {
-        $project = Project::query()->create([
-            'name' => $request->input('name'),
-            'width' => $request->input('width', 0),
-            'height' => $request->input('height', 0)
-        ]);
+        $projectConfigDto = ProjectConfigEnum::from($request->input('config'))->toProjectConfigDto();
+
+        $project = $projectService->store(new CreateProjectDto(
+            name: $request->input('name'),
+            width: $projectConfigDto->width,
+            height: $projectConfigDto->height,
+            fps: $projectConfigDto->fps,
+            userId: Auth::id()
+        ));
 
         return response()->json($project);
+    }
+
+    public function getConfigs(): JsonResponse
+    {
+        return response()->json(ProjectConfigEnum::getConfigs());
     }
 
     //TODO: pick nodes from db

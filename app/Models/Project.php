@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -23,6 +23,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereWidth($value)
+ * @property int $fps
+ * @property string|null $preview
+ * @property int $user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereFps($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreview($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)
  * @mixin \Eloquent
  */
 class Project extends Model
@@ -30,6 +36,6 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'width', 'height'
+        'name', 'width', 'height', 'fps', 'user_id'
     ];
 }

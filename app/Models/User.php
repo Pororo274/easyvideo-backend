@@ -32,6 +32,10 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @property string $username
+ * @property string|null $avatar
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -47,7 +51,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'avatar'
+        'avatar',
     ];
 
     /**

@@ -16,8 +16,9 @@ Route::controller(VideoController::class)->prefix('videos')->group(function () {
     Route::post('render', 'render');
 });
 
-Route::controller(ProjectController::class)->prefix('projects')->group(function () {
+Route::controller(ProjectController::class)->middleware('auth:sanctum')->prefix('projects')->group(function () {
     Route::post('', 'create');
+    Route::get('configs', 'getConfigs');
     Route::post('render', 'render');
 });
 
