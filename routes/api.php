@@ -21,7 +21,7 @@ Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(f
         Route::get('', 'getAllByUserId');
     });
 
-    Route::prefix('projects', function () {
+    Route::prefix('projects')->group(function () {
         Route::post('', 'create');
         Route::get('configs', 'getConfigs');
         Route::post('render', 'render');
