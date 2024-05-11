@@ -9,6 +9,7 @@ readonly class SaveChunkDto
     public function __construct(
         public UploadedFile $chunk,
         public int $projectId,
+        public bool $last,
         public ?int $mediaId
     ) {
     }

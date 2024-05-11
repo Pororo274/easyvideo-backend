@@ -11,7 +11,7 @@ use App\Models\Media;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class MediasService implements MediaServiceContract
+class MediaService implements MediaServiceContract
 {
     public function __construct(
         protected MediaRepositoryContract $mediaRepo
@@ -27,10 +27,16 @@ class MediasService implements MediaServiceContract
 
             $media = $this->mediaRepo->store(new CreateMediaDto(
                 path: $path,
-                projectId: $dto->projectId
+                projectId: $dto->projectId,
+                isUploaded: $dto->last
             ));
         } else {
-            $media = $this->mediaRepo->findById($dto->mediaId);
+            if ($dto->last) {
+                $media = $this->mediaRepo->updateUploadStatusById($dto->mediaId, true);
+            } else {
+                $media = $this->mediaRepo->findById($dto->mediaId);
+            }
+
             $path = $media->path;
         }
 

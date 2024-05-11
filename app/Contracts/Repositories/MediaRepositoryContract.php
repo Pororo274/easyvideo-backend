@@ -9,4 +9,5 @@ interface MediaRepositoryContract
 {
     public function store(CreateMediaDto $dto): Media;
     public function findById(int $mediaId): Media;
+    public function updateUploadStatusById(int $mediaId, bool $isUploaded): Media;
 }

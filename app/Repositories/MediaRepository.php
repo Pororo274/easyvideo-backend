@@ -20,4 +20,13 @@ class MediaRepository implements MediaRepositoryContract
     {
         return Media::query()->findById($mediaId);
     }
+
+    public function updateUploadStatusById(int $mediaId, bool $isUploaded): Media
+    {
+        Media::query()->where('id', $mediaId)->update([
+            'is_uploaded' => $isUploaded
+        ]);
+
+        return $this->findById($mediaId);
+    }
 }

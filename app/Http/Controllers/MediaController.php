@@ -14,7 +14,8 @@ class MediaController extends Controller
         $media = $mediaService->saveChunk(new SaveChunkDto(
             chunk: $request->file('chunk'),
             projectId: $request->input('project_id'),
-            mediaId: $request->input('media_id')
+            last: $request->input('last'),
+            mediaId: $request->input('media_id'),
         ));
 
         return response()->json($media);
