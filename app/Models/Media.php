@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $path
@@ -28,6 +28,6 @@ class Media extends Model
     use HasFactory;
 
     protected $fillable = [
-        'path', 'project_id'
+        'path', 'project_id', 'original_name'
     ];
 }
