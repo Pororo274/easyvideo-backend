@@ -54,4 +54,11 @@ class ProjectController extends Controller
 
         return response()->json($projects);
     }
+
+    public function findById(int $projectId, ProjectServiceContract $projectService): JsonResponse
+    {
+        $project = $projectService->findById($projectId);
+
+        return response()->json($project);
+    }
 }

@@ -26,4 +26,9 @@ class ProjectService implements ProjectServiceContract
     {
         return $this->projectRepo->getAllByUserId($userId);
     }
+
+    public function findById(int $projectId): Project
+    {
+        return $this->projectRepo->findById($projectId);
+    }
 }

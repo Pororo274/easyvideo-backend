@@ -32,4 +32,13 @@ class AuthController extends Controller
 
         return response()->json($user);
     }
+
+    public function logout(UserServiceContract $userService): JsonResponse
+    {
+        $userService->logout();
+
+        return response()->json([
+            'message' => 'logout'
+        ]);
+    }
 }

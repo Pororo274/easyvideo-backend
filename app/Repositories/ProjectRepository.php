@@ -24,4 +24,9 @@ class ProjectRepository implements ProjectRepositoryContract
     {
         return Project::query()->where('user_id', $userId)->get();
     }
+
+    public function findById(int $projectId): Project
+    {
+        return Project::query()->find($projectId);
+    }
 }

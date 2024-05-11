@@ -22,7 +22,11 @@ class UserService implements UserServiceContract
     {
         $user = $this->userRepo->store($dto);
 
-        Auth::login($user);
+        Auth::attempt([
+            'email' => $dto->email,
+            'password' => $dto->password
+        ]);
+        session()->regenerate();
 
         return $user;
     }
@@ -39,5 +43,10 @@ class UserService implements UserServiceContract
         }
 
         throw new LoginInvalidCredentialsException();
+    }
+
+    public function logout(): void
+    {
+        Auth::guard("web")->logout();
     }
 }

@@ -10,4 +10,5 @@ interface ProjectServiceContract
 {
     public function store(CreateProjectDto $dto): Project;
     public function getAllByUserId(int $userId): Collection;
+    public function findById(int $projectId): Project;
 }

@@ -11,11 +11,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::controller(VideoController::class)->prefix('videos')->group(function () {
-    Route::post('chunk', 'uploadChunk');
-    Route::post('render', 'render');
-});
-
 Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(function () {
     Route::prefix('users/{userId}/projects')->group(function () {
         Route::get('', 'getAllByUserId');
@@ -25,6 +20,7 @@ Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(f
         Route::post('', 'create');
         Route::get('configs', 'getConfigs');
         Route::post('render', 'render');
+        Route::get('{projectId}', 'findById');
     });
 });
 
@@ -35,4 +31,8 @@ Route::controller(MediaController::class)->prefix('media')->group(function () {
 Route::controller(AuthController::class)->prefix('auth')->group(function () {
     Route::post('sign-up', 'signUp');
     Route::post('login', 'login');
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', 'logout');
+    });
 });
