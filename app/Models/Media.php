@@ -28,6 +28,6 @@ class Media extends Model
     use HasFactory;
 
     protected $fillable = [
-        'path', 'project_id', 'original_name'
+        'path', 'project_id', 'original_name', 'is_uploaded'
     ];
 }

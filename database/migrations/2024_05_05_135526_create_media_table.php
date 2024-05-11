@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->string('path');
+            $table->boolean('is_uploaded')->default(false);
             $table->foreignId('project_id')->constrained();
             $table->string('original_name');
             $table->timestamps();
