@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $path
@@ -21,6 +21,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Media wherePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereUpdatedAt($value)
+ * @property string $uuid
+ * @property bool $is_uploaded
+ * @property string $original_name
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereIsUploaded($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereOriginalName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereUuid($value)
  * @mixin \Eloquent
  */
 class Media extends Model
@@ -28,6 +34,6 @@ class Media extends Model
     use HasFactory;
 
     protected $fillable = [
-        'path', 'project_id', 'original_name', 'is_uploaded'
+        'path', 'project_id', 'original_name', 'is_uploaded', 'uuid'
     ];
 }

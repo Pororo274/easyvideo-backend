@@ -15,7 +15,8 @@ class MediaController extends Controller
             chunk: $request->file('chunk'),
             projectId: $request->input('project_id'),
             last: $request->input('last'),
-            mediaId: $request->input('media_id'),
+            mediaUuid: $request->input('media_uuid'),
+            originalName: $request->input('original_name')
         ));
 
         return response()->json($media);

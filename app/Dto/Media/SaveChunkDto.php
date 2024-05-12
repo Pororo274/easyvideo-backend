@@ -10,7 +10,8 @@ readonly class SaveChunkDto
         public UploadedFile $chunk,
         public int $projectId,
         public bool $last,
-        public ?int $mediaId
+        public string $mediaUuid,
+        public string $originalName
     ) {
     }
 }

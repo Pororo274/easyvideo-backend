@@ -17,8 +17,9 @@ class StoreChunkRequest extends FormRequest
         return [
             'project_id' => ['required', 'integer'],
             'chunk' => ['required', File::types(['mp4', 'jpg', 'jpeg', 'png'])->max(1024)],
-            'media_id' => ['sometimes', 'integer'],
-            'last' => ['required', 'bool']
+            'media_uuid' => ['required', 'uuid', 'max:255'],
+            'last' => ['required', 'bool'],
+            'original_name' => ['required', 'max:255']
         ];
     }
 }

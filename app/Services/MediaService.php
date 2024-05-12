@@ -8,6 +8,7 @@ use App\Contracts\Services\MediaServiceContract;
 use App\Dto\Media\CreateMediaDto;
 use App\Dto\Media\SaveChunkDto;
 use App\Models\Media;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,25 +23,25 @@ class MediaService implements MediaServiceContract
     {
         $chunk = $dto->chunk;
 
-        if (is_null($dto->mediaId)) {
+        try {
+            $this->mediaRepo->findByUuid($dto->mediaUuid);
+        } catch (ModelNotFoundException $e) {
             $path = "media/" . $chunk->hashName();
 
             $media = $this->mediaRepo->store(new CreateMediaDto(
                 path: $path,
                 projectId: $dto->projectId,
-                isUploaded: $dto->last
+                isUploaded: $dto->last,
+                mediaUuid: $dto->mediaUuid,
+                originalName: $dto->originalName
             ));
-        } else {
-            if ($dto->last) {
-                $media = $this->mediaRepo->updateUploadStatusById($dto->mediaId, true);
-            } else {
-                $media = $this->mediaRepo->findById($dto->mediaId);
-            }
-
-            $path = $media->path;
         }
 
-        $absolutePath = Storage::disk('local')->path($path);
+        if ($dto->last) {
+            $media = $this->mediaRepo->updateUploadStatusByUuid($dto->mediaUuid, true);
+        }
+
+        $absolutePath = Storage::disk('local')->path($media->path);
         File::append($absolutePath, $chunk->get());
 
         return $media;

@@ -12,21 +12,23 @@ class MediaRepository implements MediaRepositoryContract
     {
         return Media::query()->create([
             'path' => $dto->path,
-            'project_id' => $dto->projectId
+            'project_id' => $dto->projectId,
+            'uuid' => $dto->mediaUuid,
+            'original_name' => $dto->originalName
         ]);
     }
 
-    public function findById(int $mediaId): Media
+    public function findByUuid(string $uuid): Media
     {
-        return Media::query()->findById($mediaId);
+        return Media::query()->where('uuid', $uuid)->firstOrFail();
     }
 
-    public function updateUploadStatusById(int $mediaId, bool $isUploaded): Media
+    public function updateUploadStatusByUuid(string $uuid, bool $isUploaded): Media
     {
-        Media::query()->where('id', $mediaId)->update([
+        Media::query()->where('uuid', $uuid)->update([
             'is_uploaded' => $isUploaded
         ]);
 
-        return $this->findById($mediaId);
+        return $this->findByUuid($uuid);
     }
 }

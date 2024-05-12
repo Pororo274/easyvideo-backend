@@ -8,6 +8,6 @@ use App\Models\Media;
 interface MediaRepositoryContract
 {
     public function store(CreateMediaDto $dto): Media;
-    public function findById(int $mediaId): Media;
-    public function updateUploadStatusById(int $mediaId, bool $isUploaded): Media;
+    public function findByUuid(string $uuid): Media;
+    public function updateUploadStatusByUuid(string $uuid, bool $isUploaded): Media;
 }
