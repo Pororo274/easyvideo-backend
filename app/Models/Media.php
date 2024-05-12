@@ -47,7 +47,7 @@ class Media extends Model
             originalName: $this->original_name,
             type: Storage::mimeType($this->path),
             status: MediaStatusEnum::fromBool($this->is_uploaded),
-            objectURL: asset($this->path)
+            objectURL: "http://localhost:8000/api/" .  $this->path
         );
     }
 }

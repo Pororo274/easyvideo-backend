@@ -29,9 +29,9 @@ Route::controller(MediaController::class)->middleware('auth:sanctum')->group(fun
         Route::get('', 'findAllByProjectId');
     });
 
-    Route::prefix('media')->group(function () {
+    Route::prefix('media')->withoutMiddleware('auth:sanctum')->group(function () {
         Route::post('chunk', 'storeChunk');
-        Route::get('{mediaName]', 'getMedia');
+        Route::get('{mediaName}', 'getMedia');
     });
 });
 
