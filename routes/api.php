@@ -24,8 +24,15 @@ Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(f
     });
 });
 
-Route::controller(MediaController::class)->prefix('media')->group(function () {
-    Route::post('chunk', 'storeChunk');
+Route::controller(MediaController::class)->middleware('auth:sanctum')->group(function () {
+    Route::prefix('projects/{projectId}/media')->group(function () {
+        Route::get('', 'findAllByProjectId');
+    });
+
+    Route::prefix('media')->group(function () {
+        Route::post('chunk', 'storeChunk');
+        Route::get('{mediaName]', 'getMedia');
+    });
 });
 
 Route::controller(AuthController::class)->prefix('auth')->group(function () {

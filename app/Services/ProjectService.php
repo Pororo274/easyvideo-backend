@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 class ProjectService implements ProjectServiceContract
 {
     public function __construct(
-        protected ProjectRepositoryContract $projectRepo
+        protected ProjectRepositoryContract $projectRepo,
     ) {
     }
 

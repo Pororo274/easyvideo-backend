@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Dto\Media\MediaDto;
+use App\Enums\Media\MediaStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $path
@@ -36,4 +39,15 @@ class Media extends Model
     protected $fillable = [
         'path', 'project_id', 'original_name', 'is_uploaded', 'uuid'
     ];
+
+    public function toDto(): MediaDto
+    {
+        return new MediaDto(
+            uuid: $this->uuid,
+            originalName: $this->original_name,
+            type: Storage::mimeType($this->path),
+            status: MediaStatusEnum::fromBool($this->is_uploaded),
+            objectURL: asset($this->path)
+        );
+    }
 }

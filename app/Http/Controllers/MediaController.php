@@ -6,6 +6,8 @@ use App\Contracts\Services\MediaServiceContract;
 use App\Dto\Media\SaveChunkDto;
 use App\Http\Requests\Media\StoreChunkRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class MediaController extends Controller
 {
@@ -20,5 +22,19 @@ class MediaController extends Controller
         ));
 
         return response()->json($media);
+    }
+
+    public function findAllByProjectId(int $projectId, MediaServiceContract $mediaService)
+    {
+        $medias = $mediaService->findAllByProjectId($projectId);
+
+        return $medias->map(function ($media) {
+            return $media->toDto();
+        });
+    }
+
+    public function getMedia(string $mediaName): BinaryFileResponse
+    {
+        return response()->file(Storage::path('media/' . $mediaName));
     }
 }

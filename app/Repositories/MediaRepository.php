@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Dto\Media\CreateMediaDto;
 use App\Models\Media;
+use Illuminate\Database\Eloquent\Collection;
 
 class MediaRepository implements MediaRepositoryContract
 {
@@ -30,5 +31,10 @@ class MediaRepository implements MediaRepositoryContract
         ]);
 
         return $this->findByUuid($uuid);
+    }
+
+    public function findAllByProjectId(int $projectId): Collection
+    {
+        return Media::query()->where('project_id', $projectId)->get();
     }
 }

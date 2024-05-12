@@ -8,6 +8,7 @@ use App\Contracts\Services\MediaServiceContract;
 use App\Dto\Media\CreateMediaDto;
 use App\Dto\Media\SaveChunkDto;
 use App\Models\Media;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -45,5 +46,10 @@ class MediaService implements MediaServiceContract
         File::append($absolutePath, $chunk->get());
 
         return $media;
+    }
+
+    public function findAllByProjectId(int $projectId): Collection
+    {
+        return $this->mediaRepo->findAllByProjectId($projectId);
     }
 }
