@@ -24,7 +24,7 @@ class MediaService implements MediaServiceContract
         $chunk = $dto->chunk;
 
         try {
-            $this->mediaRepo->findByUuid($dto->mediaUuid);
+            $media = $this->mediaRepo->findByUuid($dto->mediaUuid);
         } catch (ModelNotFoundException $e) {
             $path = "media/" . $chunk->hashName();
 
