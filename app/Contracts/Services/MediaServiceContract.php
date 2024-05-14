@@ -10,4 +10,5 @@ interface MediaServiceContract
 {
     public function saveChunk(SaveChunkDto $dto): Media;
     public function findAllByProjectId(int $projectId): Collection;
+    public function findOneByUuid(string $uuid): Media;
 }

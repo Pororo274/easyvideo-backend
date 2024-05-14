@@ -19,7 +19,7 @@ Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(f
     Route::prefix('projects')->group(function () {
         Route::post('', 'create');
         Route::get('configs', 'getConfigs');
-        Route::post('render', 'render');
+        Route::post('{projectId}/render', 'render');
         Route::get('{projectId}', 'findById');
     });
 });

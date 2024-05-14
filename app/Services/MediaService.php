@@ -52,4 +52,9 @@ class MediaService implements MediaServiceContract
     {
         return $this->mediaRepo->findAllByProjectId($projectId);
     }
+
+    public function findOneByUuid(string $uuid): Media
+    {
+        return $this->mediaRepo->findByUuid($uuid);
+    }
 }

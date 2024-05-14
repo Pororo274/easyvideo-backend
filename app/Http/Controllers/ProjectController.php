@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\ProjectServiceContract;
 use App\Dto\Projects\CreateProjectDto;
 use App\Dto\Projects\ProjectRenderJobDto;
+use App\Dto\VirtualMedia\VirtualImageDto;
+use App\Dto\VirtualMedia\VirtualVideoDto;
 use App\Enums\Projects\ProjectConfigEnum;
+use App\Helpers\VirtualMediaHelper;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Http\Requests\Project\RenderRequest;
 use App\Jobs\ProjectRenderJob;
@@ -36,16 +40,28 @@ class ProjectController extends Controller
     }
 
     //TODO: pick nodes from db
-    public function render(RenderRequest $request)
+    public function render(int $projectId, RenderRequest $request, MediaServiceContract $mediaService, ProjectServiceContract $projectService)
     {
+        $virtualMediasArray = $request->input('virtualMedias');
+        $virtualMedias = [];
+
+        foreach ($virtualMediasArray as $virtualMedia) {
+            if (!is_null($virtualMedia['mediaUuid'])) {
+                $media = $mediaService->findOneByUuid($virtualMedia['mediaUuid']);
+                $virtualMedias[] = VirtualMediaHelper::toDtoFromArray([...$virtualMedia, 'mediaPath' => $media->path]);
+            }
+        }
+
+        $project = $projectService->findById($projectId);
+
         ProjectRenderJob::dispatch(new ProjectRenderJobDto(
-            projectId: $request->input('project_id'),
-            nodes: $request->input('nodes')
+            projectId: $projectId,
+            width: $project->width,
+            height: $project->height,
+            virtualMedias: $virtualMedias
         ));
 
-        return response()->json([
-            'status' => 'Render started'
-        ]);
+        return response()->json($virtualMedias);
     }
 
     public function getAllByUserId(int $userId, ProjectServiceContract $projectService): JsonResponse
