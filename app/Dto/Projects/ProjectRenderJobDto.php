@@ -12,11 +12,11 @@ readonly class ProjectRenderJobDto
      * @param VirtualMediaDto[] $virtualMedias
      */
     public function __construct(
+        public int $userId,
         public int $projectId,
         public int $width,
         public int $height,
         public array $virtualMedias
-    )
-    {
+    ) {
     }
 }

@@ -30,8 +30,7 @@ class ProjectRenderJob implements ShouldQueue
      */
     public function __construct(
         public readonly ProjectRenderJobDto $dto
-    )
-    {
+    ) {
         //
     }
 
@@ -47,7 +46,7 @@ class ProjectRenderJob implements ShouldQueue
 
     /**
      * @param Collection<TempMediaDto> $tempMedias
-     * @return void
+     * @return string
      */
     protected function mergeStep(Collection $tempMedias): string
     {
@@ -63,7 +62,7 @@ class ProjectRenderJob implements ShouldQueue
 
         $sortedTempMedias = $tempMedias->sortByDesc('layer');
 
-        $output = "temp-media/blank  _0_".$this->dto->projectId.".mp4";
+        $output = "temp-media/blank  _0_" . $this->dto->projectId . ".mp4";
 
         $blankVideo = FFMpegHelper::createBlankVideo(new CreateBlankVideoDto(
             outputPath: $output,
@@ -92,6 +91,7 @@ class ProjectRenderJob implements ShouldQueue
         $mediaNodes = $this->mediaStep();
         $output = $this->mergeStep($mediaNodes);
         RenderJobEndedEvent::dispatch(new RenderJobEndedDto(
+            userId: $this->dto->userId,
             projectId: $this->dto->projectId,
             outputPath: $output
         ));

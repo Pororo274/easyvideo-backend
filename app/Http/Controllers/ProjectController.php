@@ -55,6 +55,7 @@ class ProjectController extends Controller
         $project = $projectService->findById($projectId);
 
         ProjectRenderJob::dispatch(new ProjectRenderJobDto(
+            userId: Auth::id(),
             projectId: $projectId,
             width: $project->width,
             height: $project->height,

@@ -20,8 +20,7 @@ class RenderJobEndedEvent implements ShouldBroadcast
      */
     public function __construct(
         public RenderJobEndedDto $dto
-    )
-    {
+    ) {
         //
     }
 
@@ -33,7 +32,7 @@ class RenderJobEndedEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('projects.'.$this->dto->projectId),
+            new PrivateChannel('projects.' . $this->dto->userId),
         ];
     }
 }
