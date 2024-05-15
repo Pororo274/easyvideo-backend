@@ -16,6 +16,7 @@ use App\Jobs\ProjectRenderJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -77,5 +78,10 @@ class ProjectController extends Controller
         $project = $projectService->findById($projectId);
 
         return response()->json($project);
+    }
+
+    public function downloadOutputFile(string $filename)
+    {
+        return response()->download(Storage::path("temp-media/{$filename}"), $filename);
     }
 }

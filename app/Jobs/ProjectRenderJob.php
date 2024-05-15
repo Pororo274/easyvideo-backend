@@ -93,7 +93,7 @@ class ProjectRenderJob implements ShouldQueue
         RenderJobEndedEvent::dispatch(new RenderJobEndedDto(
             userId: $this->dto->userId,
             projectId: $this->dto->projectId,
-            outputPath: $output
+            link: url("/api/projects/download/".basename($output))
         ));
     }
 }
