@@ -9,17 +9,13 @@ use App\Dto\TempMedia\TempMediaDto;
 use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Events\RenderJobEndedEvent;
 use App\Helpers\FFMpegHelper;
-use FFMpeg\Filters\AdvancedMedia\ComplexFilters;
-use FFMpeg\Format\Video\X264;
+use App\Helpers\MediaHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class ProjectRenderJob implements ShouldQueue
 {
@@ -88,12 +84,14 @@ class ProjectRenderJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $mediaNodes = $this->mediaStep();
-        $output = $this->mergeStep($mediaNodes);
+        $tempMedias = $this->mediaStep();
+        $output = $this->mergeStep($tempMedias);
         RenderJobEndedEvent::dispatch(new RenderJobEndedDto(
             userId: $this->dto->userId,
             projectId: $this->dto->projectId,
             link: url("/api/projects/download/".basename($output))
         ));
+
+        MediaHelper::removeTempMedias($tempMedias);
     }
 }
