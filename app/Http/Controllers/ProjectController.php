@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\ProjectServiceContract;
+use App\Contracts\Services\VirtualMediaServiceContract;
 use App\Dto\Projects\CreateProjectDto;
 use App\Dto\Projects\ProjectRenderJobDto;
 use App\Dto\VirtualMedia\VirtualImageDto;
@@ -40,19 +41,9 @@ class ProjectController extends Controller
         return response()->json(ProjectConfigEnum::getConfigs());
     }
 
-    //TODO: pick nodes from db
-    public function render(int $projectId, RenderRequest $request, MediaServiceContract $mediaService, ProjectServiceContract $projectService)
+    public function render(int $projectId, VirtualMediaServiceContract $virtualMediaService, ProjectServiceContract $projectService)
     {
-        $virtualMediasArray = $request->input('virtualMedias');
-        $virtualMedias = [];
-
-        foreach ($virtualMediasArray as $virtualMedia) {
-            if (!is_null($virtualMedia['mediaUuid'])) {
-                $media = $mediaService->findOneByUuid($virtualMedia['mediaUuid']);
-                $virtualMedias[] = VirtualMediaHelper::toDtoFromArray([...$virtualMedia, 'mediaPath' => $media->path]);
-            }
-        }
-
+        $virtualMedias = $virtualMediaService->findAllByProjectId($projectId);
         $project = $projectService->findById($projectId);
 
         ProjectRenderJob::dispatch(new ProjectRenderJobDto(

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\VirtualMediaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,13 @@ Route::controller(MediaController::class)->middleware('auth:sanctum')->group(fun
     Route::prefix('media')->withoutMiddleware('auth:sanctum')->group(function () {
         Route::post('chunk', 'storeChunk');
         Route::get('{mediaName}', 'getMedia');
+    });
+});
+
+Route::controller(VirtualMediaController::class)->group(function () {
+    Route::prefix('projects/{projectId}/virtual-media')->group(function () {
+        Route::get('', 'findAllByProjectId');
+        Route::post('sync', 'sync');
     });
 });
 

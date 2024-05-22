@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Dto\FFMpeg\CreateBlankVideoDto;
 use App\Dto\Projects\ProjectRenderJobDto;
 use App\Dto\Projects\RenderJobEndedDto;
+use App\Dto\TempMedia\TempImageDto;
 use App\Dto\TempMedia\TempMediaDto;
 use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Events\RenderJobEndedEvent;
@@ -35,8 +36,8 @@ class ProjectRenderJob implements ShouldQueue
      */
     protected function mediaStep(): Collection
     {
-        return collect($this->dto->virtualMedias)->map(function (VirtualMediaDto $virtualMedia) {
-            return $virtualMedia->render();
+        return $this->dto->virtualMedias->map(function (VirtualMediaDto $virtualMedia) {
+            return $virtualMedia->createTempMedia();
         });
     }
 
@@ -57,6 +58,12 @@ class ProjectRenderJob implements ShouldQueue
         })->first();
 
         $sortedTempMedias = $tempMedias->sortByDesc('layer');
+        $sortedTempMedias = $sortedTempMedias->add(new TempImageDto(
+            mediaPath: "helpers/watermark.png",
+            globalStartTime: 0,
+            duration: $totalDuration,
+            layer: 1,
+        ));
 
         $output = "temp-media/blank  _0_" . $this->dto->projectId . ".mp4";
 

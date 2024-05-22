@@ -2,7 +2,9 @@
 
 namespace App\Dto\VirtualMedia;
 
+use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Dto\TempMedia\TempMediaDto;
+use App\Repositories\MediaRepository;
 
 readonly abstract class VirtualMediaDto
 {
@@ -14,7 +16,7 @@ readonly abstract class VirtualMediaDto
         public float $duration,
     ) {}
 
-    public abstract function render(): TempMediaDto;
+    public abstract function createTempMedia(): TempMediaDto;
 
     public function getEndTime(): float
     {

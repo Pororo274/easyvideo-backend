@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contracts\Services\MediaServiceContract;
 use App\Dto\Media\SaveChunkDto;
 use App\Http\Requests\Media\StoreChunkRequest;
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -28,7 +29,7 @@ class MediaController extends Controller
     {
         $medias = $mediaService->findAllByProjectId($projectId);
 
-        return $medias->map(function ($media) {
+        return $medias->map(function (Media $media) {
             return $media->toDto();
         });
     }
