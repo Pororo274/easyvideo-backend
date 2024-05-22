@@ -10,6 +10,7 @@ use App\Dto\Media\SaveChunkDto;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,26 +25,30 @@ class MediaService implements MediaServiceContract
     {
         $chunk = $dto->chunk;
 
-        try {
-            $media = $this->mediaRepo->findByUuid($dto->mediaUuid);
-        } catch (ModelNotFoundException $e) {
-            $path = "media/" . $chunk->hashName();
+        $media = DB::transaction(function () use ($dto, $chunk) {
+            try {
+                $media = $this->mediaRepo->findByUuid($dto->mediaUuid);
+            } catch (ModelNotFoundException) {
+                $path = "media/" . $chunk->hashName();
 
-            $media = $this->mediaRepo->store(new CreateMediaDto(
-                path: $path,
-                projectId: $dto->projectId,
-                isUploaded: $dto->last,
-                mediaUuid: $dto->mediaUuid,
-                originalName: $dto->originalName
-            ));
-        }
+                $media = $this->mediaRepo->store(new CreateMediaDto(
+                    path: $path,
+                    projectId: $dto->projectId,
+                    isUploaded: $dto->last,
+                    mediaUuid: $dto->mediaUuid,
+                    originalName: $dto->originalName
+                ));
+            }
 
-        if ($dto->last) {
-            $media = $this->mediaRepo->updateUploadStatusByUuid($dto->mediaUuid, true);
-        }
+            if ($dto->last) {
+                $media = $this->mediaRepo->updateUploadStatusByUuid($dto->mediaUuid, true);
+            }
 
-        $absolutePath = Storage::disk('local')->path($media->path);
-        File::append($absolutePath, $chunk->get());
+            $absolutePath = Storage::disk('local')->path($media->path);
+            File::append($absolutePath, $chunk->get());
+
+            return $media;
+        });
 
         return $media;
     }

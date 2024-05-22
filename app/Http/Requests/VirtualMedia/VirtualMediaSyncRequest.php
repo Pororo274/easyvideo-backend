@@ -14,7 +14,7 @@ class VirtualMediaSyncRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'virtualMedias' => ['required', 'array']
+            'virtualMedias' => ['sometimes', 'array']
         ];
     }
 }

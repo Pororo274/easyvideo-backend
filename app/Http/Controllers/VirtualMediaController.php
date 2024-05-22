@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Services\VirtualMediaServiceContract;
 use App\Dto\VirtualMedia\SyncVirtualMediaDto;
-use App\Helpers\VirtualMediaHelper;
-use App\Http\Requests\VirtualMedia\CreateVirtualMediaRequest;
 use App\Http\Requests\VirtualMedia\VirtualMediaSyncRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
