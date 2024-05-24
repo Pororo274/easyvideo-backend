@@ -28,7 +28,7 @@ readonly class TempImageDto extends TempMediaDto
             ->open([$dto->mediaPath, $this->mediaPath])
             ->addFilter(function (ComplexFilters $filters) use ($endTime) {
                 $filters
-                    ->custom('[1    :v]', (new FFMpegScaleFilter($this->size))->toString(), '[v0]')
+                    ->custom('[1:v]', (new FFMpegScaleFilter($this->size))->toString(), '[v0]')
                     ->custom('[0:v][v0]', (new FFMpegOverlayFilter($this->position, $this->globalStartTime, $endTime))->toString(), '[v1]')
                     ->custom('[0:a]', 'anull', '[a2]');
             })
