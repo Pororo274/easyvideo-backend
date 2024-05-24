@@ -8,6 +8,7 @@ use App\FFMpeg\Filters\FFMpegOverlayFilter;
 use App\FFMpeg\Filters\FFMpegScaleFilter;
 use FFMpeg\Filters\AdvancedMedia\ComplexFilters;
 use FFMpeg\Format\Video\X264;
+use Laravel\Reverb\Loggers\Log;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use function Ramsey\Uuid\v4;
 
@@ -24,6 +25,7 @@ readonly class TempImageDto extends TempMediaDto
 
         $endTime = $this->globalStartTime + $this->duration;
 
+        \Illuminate\Support\Facades\Log::debug($this->mediaPath);
         FFMpeg::fromDisk('local')
             ->open([$dto->mediaPath, $this->mediaPath])
             ->addFilter(function (ComplexFilters $filters) use ($endTime) {
