@@ -79,6 +79,8 @@ class ProjectRenderJob implements ShouldQueue
             duration: $totalDuration,
         ));
 
+        \Illuminate\Support\Facades\Log::debug($sortedTempMedias);
+
         /**
          * @var TempMediaDto[] $sortedTempMediasArray
          */
