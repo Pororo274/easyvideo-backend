@@ -19,6 +19,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Laravel\Reverb\Loggers\Log;
 
 class ProjectRenderJob implements ShouldQueue
 {
@@ -97,6 +98,7 @@ class ProjectRenderJob implements ShouldQueue
     {
         $tempMedias = $this->mediaStep();
         $output = $this->mergeStep($tempMedias);
+        \Illuminate\Support\Facades\Log::debug('Rendered');
         RenderJobEndedEvent::dispatch(new RenderJobEndedDto(
             userId: $this->dto->userId,
             projectId: $this->dto->projectId,
