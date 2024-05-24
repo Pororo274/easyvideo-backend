@@ -2,15 +2,16 @@
 
 namespace App\Dto\VirtualMedia;
 
-use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Dto\TempMedia\TempVideoDto;
+use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Size;
 use App\Models\Media;
 use FFMpeg\Coordinate\TimeCode;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 readonly class VirtualVideoDto extends VirtualMediaDto
 {
-    public function __construct(string $uuid, int $layer, float $globalStartTime, float $startTime, float $duration, public string $mediaUuid, public float $originalDuration)
+    public function __construct(string $uuid, int $layer, float $globalStartTime, float $startTime, float $duration, public string $mediaUuid, public float $originalDuration, public Position $position, public Size $size)
     {
         parent::__construct($uuid, $layer, $globalStartTime, $startTime, $duration);
     }
@@ -33,7 +34,9 @@ readonly class VirtualVideoDto extends VirtualMediaDto
                 mediaPath: $outputFilePath,
                 globalStartTime: $this->globalStartTime,
                 duration: $this->duration,
-                layer: $this->layer
+                layer: $this->layer,
+                size: $this->size,
+                position: $this->position
             );
         }
 
@@ -41,7 +44,9 @@ readonly class VirtualVideoDto extends VirtualMediaDto
             mediaPath: $media->path,
             globalStartTime: $this->globalStartTime,
             duration: $this->duration,
-            layer: $this->layer
+            layer: $this->layer,
+            size: $this->size,
+            position: $this->position
         );
     }
 }

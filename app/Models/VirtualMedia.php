@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Contracts\Observers\ProjectUpdatedContract;
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
+use App\Observers\ProjectUpdateObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  *
@@ -34,7 +38,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereLayer($value)
  * @mixin \Eloquent
  */
-class VirtualMedia extends Model
+#[ObservedBy([ProjectUpdateObserver::class])]
+class VirtualMedia extends Model implements ProjectUpdatedContract
 {
     use HasFactory;
 
@@ -45,4 +50,14 @@ class VirtualMedia extends Model
     protected $casts = [
       'type' => VirtualMediaTypeEnum::class
     ];
+
+    public function getUpdatedAt(): Carbon
+    {
+        return $this->updated_at;
+    }
+
+    public function getProjectId(): int
+    {
+        return $this->project_id;
+    }
 }

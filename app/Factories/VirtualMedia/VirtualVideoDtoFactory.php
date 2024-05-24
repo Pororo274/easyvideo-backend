@@ -3,6 +3,8 @@
 namespace App\Factories\VirtualMedia;
 
 use App\Dto\VirtualMedia\VirtualVideoDto;
+use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Size;
 use App\Models\VirtualVideo;
 
 readonly class VirtualVideoDtoFactory extends VirtualMediaDtoFactory
@@ -18,7 +20,9 @@ readonly class VirtualVideoDtoFactory extends VirtualMediaDtoFactory
             startTime: $this->virtualMedia->start_time,
             duration: $this->virtualMedia->duration,
             mediaUuid: $virtualVideo->media_uuid,
-            originalDuration: $virtualVideo->original_duration
+            originalDuration: $virtualVideo->original_duration,
+            position: new Position($virtualVideo->x_position, $virtualVideo->y_position),
+            size: new Size($virtualVideo->width, $virtualVideo->height)
         );
     }
 }

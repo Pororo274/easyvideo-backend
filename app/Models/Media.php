@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Contracts\Observers\ProjectUpdatedContract;
 use App\Dto\Media\MediaDto;
 use App\Enums\Media\MediaStatusEnum;
+use App\Observers\ProjectUpdateObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $path
@@ -32,7 +36,8 @@ use Illuminate\Support\Facades\Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereUuid($value)
  * @mixin \Eloquent
  */
-class Media extends Model
+#[ObservedBy([ProjectUpdateObserver::class])]
+class Media extends Model implements ProjectUpdatedContract
 {
     use HasFactory;
 
@@ -49,5 +54,15 @@ class Media extends Model
             status: MediaStatusEnum::fromBool($this->is_uploaded),
             objectURL: url('/api/' . $this->path)
         );
+    }
+
+    public function getUpdatedAt(): Carbon
+    {
+        return $this->updated_at;
+    }
+
+    public function getProjectId(): int
+    {
+        return $this->project_id;
     }
 }

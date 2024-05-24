@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Dto\Projects\ProjectDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -36,6 +37,20 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'width', 'height', 'fps', 'user_id'
+        'name', 'width', 'height', 'fps', 'user_id',
+        'updated_at'
     ];
+
+    public function toDto(): ProjectDto
+    {
+        return new ProjectDto(
+            id: $this->id,
+            name: $this->name,
+            width: $this->width,
+            height: $this->height,
+            fps: $this->fps,
+            userId: $this->user_id,
+            createdAt: $this->updated_at
+        );
+    }
 }

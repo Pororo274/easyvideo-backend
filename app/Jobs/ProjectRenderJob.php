@@ -9,6 +9,8 @@ use App\Dto\TempMedia\TempImageDto;
 use App\Dto\TempMedia\TempMediaDto;
 use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Events\RenderJobEndedEvent;
+use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Size;
 use App\Helpers\FFMpegHelper;
 use App\Helpers\MediaHelper;
 use Illuminate\Bus\Queueable;
@@ -63,6 +65,8 @@ class ProjectRenderJob implements ShouldQueue
             globalStartTime: 0,
             duration: $totalDuration,
             layer: 1,
+            size: new Size(64, 64),
+            position: new Position($this->dto->width - 64, $this->dto->height - 64)
         ));
 
         $output = "temp-media/blank  _0_" . $this->dto->projectId . ".mp4";

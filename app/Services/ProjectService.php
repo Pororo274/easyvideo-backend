@@ -5,8 +5,9 @@ namespace App\Services;
 use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Contracts\Services\ProjectServiceContract;
 use App\Dto\Projects\CreateProjectDto;
+use App\Dto\Projects\ProjectDto;
 use App\Models\Project;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class ProjectService implements ProjectServiceContract
 {
@@ -17,18 +18,18 @@ class ProjectService implements ProjectServiceContract
 
     public function store(CreateProjectDto $dto): Project
     {
-        $project = $this->projectRepo->store($dto);
-
-        return $project;
+        return $this->projectRepo->store($dto);
     }
 
     public function getAllByUserId(int $userId): Collection
     {
-        return $this->projectRepo->getAllByUserId($userId);
+        return $this->projectRepo->getAllByUserId($userId)->map(function (Project $project) {
+            return $project->toDto();
+        });
     }
 
-    public function findById(int $projectId): Project
+    public function findById(int $projectId): ProjectDto
     {
-        return $this->projectRepo->findById($projectId);
+        return $this->projectRepo->findById($projectId)->toDto();
     }
 }

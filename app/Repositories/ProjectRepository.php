@@ -22,7 +22,7 @@ class ProjectRepository implements ProjectRepositoryContract
 
     public function getAllByUserId(int $userId): Collection
     {
-        return Project::query()->where('user_id', $userId)->get();
+        return Project::query()->where('user_id', $userId)->orderBy('updated_at', 'desc')->get();
     }
 
     public function findById(int $projectId): Project

@@ -3,8 +3,9 @@
 namespace App\Helpers;
 
 use App\Dto\FFMpeg\CreateBlankVideoDto;
-use App\Dto\FFMpeg\TrimFilterDto;
 use App\Dto\TempMedia\TempVideoDto;
+use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Size;
 use FFMpeg\Format\Video\X264;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
@@ -43,7 +44,9 @@ class FFMpegHelper
             mediaPath: $dto->outputPath,
             globalStartTime: 0,
             duration: $dto->duration,
-            layer: 9999
+            layer: 9999,
+            size: new Size($dto->width, $dto->height),
+            position: new Position(0, 0)
         );
     }
 }

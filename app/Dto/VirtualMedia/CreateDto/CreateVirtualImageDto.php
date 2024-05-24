@@ -5,12 +5,14 @@ namespace App\Dto\VirtualMedia\CreateDto;
 use App\Dto\VirtualMedia\VirtualImageDto;
 use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
+use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Size;
 use App\Models\VirtualImage;
 
 readonly class CreateVirtualImageDto extends CreateVirtualMediaDto
 {
 
-    public function __construct(string $uuid, int $layer, float $globalStartTime, float $startTime, float $duration, int $projectId, public string $mediaUuid)
+    public function __construct(string $uuid, int $layer, float $globalStartTime, float $startTime, float $duration, int $projectId, public string $mediaUuid, public Position $position, public Size $size)
     {
         parent::__construct($uuid, $layer, $globalStartTime, $startTime, $duration, $projectId);
     }
@@ -25,12 +27,12 @@ readonly class CreateVirtualImageDto extends CreateVirtualMediaDto
         VirtualImage::query()->create([
             'uuid' => $this->uuid,
             'media_uuid' => $this->mediaUuid,
-            'width' => 0,
-            'height' => 0,
+            'width' => $this->size->width,
+            'height' => $this->size->height,
             'crop_width' => 0,
             'crop_height' => 0,
-            'x_position' => 0,
-            'y_position' => 0
+            'x_position' => $this->position->x,
+            'y_position' => $this->position->y
         ]);
 
         return new VirtualImageDto(
@@ -40,6 +42,8 @@ readonly class CreateVirtualImageDto extends CreateVirtualMediaDto
             startTime: $this->startTime,
             duration: $this->duration,
             mediaUuid: $this->mediaUuid,
+            position: $this->position,
+            size: $this->size
         );
     }
 }

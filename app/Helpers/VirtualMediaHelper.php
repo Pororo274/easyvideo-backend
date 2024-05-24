@@ -2,15 +2,16 @@
 
 namespace App\Helpers;
 
+use App\Dto\VirtualMedia\CreateDto\CreateVirtualImageDto;
 use App\Dto\VirtualMedia\CreateDto\CreateVirtualMediaDto;
 use App\Dto\VirtualMedia\CreateDto\CreateVirtualVideoDto;
-use App\Dto\VirtualMedia\CreateDto\CreateVirtualImageDto;
 use App\Dto\VirtualMedia\UpdateDto\UpdateVirtualImageDto;
 use App\Dto\VirtualMedia\UpdateDto\UpdateVirtualMediaDto;
 use App\Dto\VirtualMedia\UpdateDto\UpdateVirtualVideoDto;
 use App\Dto\VirtualMedia\VirtualMediaDto;
+use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Size;
 use App\Models\VirtualMedia;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Collection;
 
 class VirtualMediaHelper
@@ -32,6 +33,8 @@ class VirtualMediaHelper
                 globalStartTime: $virtualMedia->get('globalStartTime'),
                 startTime: $virtualMedia->get('startTime'),
                 duration: $virtualMedia->get('duration'),
+                position: new Position($virtualMedia->get('position')['x'], $virtualMedia->get('position')['y']),
+                size: new Size($virtualMedia->get('size')['width'], $virtualMedia->get('size')['height'])
             );
         }
 
@@ -41,6 +44,8 @@ class VirtualMediaHelper
             globalStartTime: $virtualMedia->get('globalStartTime'),
             startTime: $virtualMedia->get('startTime'),
             duration: $virtualMedia->get('duration'),
+            position: new Position($virtualMedia->get('position')['x'], $virtualMedia->get('position')['y']),
+            size: new Size($virtualMedia->get('size')['width'], $virtualMedia->get('size')['height'])
         );
     }
 
@@ -56,6 +61,8 @@ class VirtualMediaHelper
                 projectId: $virtualMedia->get('projectId'),
                 mediaUuid: $virtualMedia->get('mediaUuid'),
                 originalDuration: $virtualMedia->get('originalDuration'),
+                position: new Position($virtualMedia->get('position')['x'], $virtualMedia->get('position')['y']),
+                size: new Size($virtualMedia->get('size')['width'], $virtualMedia->get('size')['height'])
             );
         }
 
@@ -67,6 +74,8 @@ class VirtualMediaHelper
             duration: $virtualMedia->get('duration'),
             projectId: $virtualMedia->get('projectId'),
             mediaUuid: $virtualMedia->get('mediaUuid'),
+            position: new Position($virtualMedia->get('position')['x'], $virtualMedia->get('position')['y']),
+            size: new Size($virtualMedia->get('size')['width'], $virtualMedia->get('size')['height'])
         );
     }
 }
