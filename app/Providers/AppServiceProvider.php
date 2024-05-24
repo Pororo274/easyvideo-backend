@@ -18,6 +18,7 @@ use App\Services\MediaService;
 use App\Services\ProjectService;
 use App\Services\UserService;
 use App\Services\VirtualMediaService;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -45,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if(config('app.env') !== 'local') {
+            URL::forceScheme('https');
+        }
     }
 }
