@@ -11,6 +11,7 @@ use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Events\RenderJobEndedEvent;
 use App\FFMpeg\Coordinate\Position;
 use App\FFMpeg\Coordinate\Size;
+use App\FFMpeg\Export\FFMpegExporter;
 use App\Helpers\FFMpegHelper;
 use App\Helpers\MediaHelper;
 use Illuminate\Bus\Queueable;
@@ -98,15 +99,19 @@ class ProjectRenderJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $tempMedias = $this->mediaStep();
-        $output = $this->mergeStep($tempMedias);
-        \Illuminate\Support\Facades\Log::debug('Rendered');
-        RenderJobEndedEvent::dispatch(new RenderJobEndedDto(
-            userId: $this->dto->userId,
-            projectId: $this->dto->projectId,
-            link: url("/api/projects/download/".basename($output))
-        ));
+        // $tempMedias = $this->mediaStep();
+        // $output = $this->mergeStep($tempMedias);
+        // \Illuminate\Support\Facades\Log::debug('Rendered');
+        // RenderJobEndedEvent::dispatch(new RenderJobEndedDto(
+        //     userId: $this->dto->userId,
+        //     projectId: $this->dto->projectId,
+        //     link: url("/api/projects/download/".basename($output))
+        // ));
 
-        MediaHelper::removeTempMedias($tempMedias);
+        // MediaHelper::removeTempMedias($tempMedias);
+
+
+        $exporter = new FFMpegExporter();
+        $exporter->export();
     }
 }

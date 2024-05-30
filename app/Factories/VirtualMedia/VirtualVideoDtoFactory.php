@@ -2,27 +2,46 @@
 
 namespace App\Factories\VirtualMedia;
 
+use App\Dto\Timeline\TimelineProperties;
+use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Dto\VirtualMedia\VirtualVideoDto;
-use App\FFMpeg\Coordinate\Position;
-use App\FFMpeg\Coordinate\Size;
 use App\Models\VirtualVideo;
+use Illuminate\Database\Eloquent\Model;
 
-readonly class VirtualVideoDtoFactory extends VirtualMediaDtoFactory
+class VirtualVideoDtoFactory extends VirtualMediaDtoFactory
 {
-    public function factoryMethod(): VirtualVideoDto
+    public function getModel(): string
     {
-        $virtualVideo = VirtualVideo::query()->where('uuid', $this->virtualMedia->uuid)->first();
+        return VirtualVideo::class;
+    }
 
+    public function getFields(): array
+    {
+        return ['original_duration', 'media_uuid'];
+    }
+
+    public function getRequired(): array
+    {
+        return ['originalDuration', 'mediaUuid'];
+    }
+
+    public function createVirtualMediaDtoFromModel(Model $vm): VirtualMediaDto
+    {
         return new VirtualVideoDto(
-            uuid: $virtualVideo->uuid,
-            layer: $this->virtualMedia->layer,
-            globalStartTime: $this->virtualMedia->global_start_time,
-            startTime: $this->virtualMedia->start_time,
-            duration: $this->virtualMedia->duration,
-            mediaUuid: $virtualVideo->media_uuid,
-            originalDuration: $virtualVideo->original_duration,
-            position: new Position($virtualVideo->x_position, $virtualVideo->y_position),
-            size: new Size($virtualVideo->width, $virtualVideo->height)
+            timelineProperties: new TimelineProperties($vm->uuid, $vm->layer, $vm->global_start_time, $vm->start_time, $vm->duration),
+            filterList: $this->filterListFactory->factoryMethod($vm),
+            originalDuration: $vm->original_duration,
+            mediaUuid: $vm->media_uuid
+        );
+    }
+
+    public function createVirtualMediaDtoFromArray(array $vm): VirtualMediaDto
+    {
+        return new VirtualVideoDto(
+            timelineProperties: new TimelineProperties($vm['uuid'], $vm['layer'], $vm['globaStartTime'], $vm['startTime'], $vm['duration']),
+            filterList: $this->filterListFactory->createFromArray($vm),
+            originalDuration: $vm['originalDuration'],
+            mediaUuid: $vm['mediaUuid']
         );
     }
 }

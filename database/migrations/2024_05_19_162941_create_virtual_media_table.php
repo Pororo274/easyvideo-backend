@@ -42,9 +42,6 @@ return new class extends Migration
 
             $table->uuid('media_uuid');
             $table->timestamps();
-
-            $table->foreign('uuid')->on('virtual_media')->references('uuid')->onDelete('CASCADE');
-            $table->foreign('media_uuid')->on('media')->references('uuid');
         });
 
         Schema::create('virtual_images', function (Blueprint $table) {
@@ -55,9 +52,6 @@ return new class extends Migration
 
             $table->uuid('media_uuid');
             $table->timestamps();
-
-            $table->foreign('uuid')->on('virtual_media')->references('uuid')->onDelete('CASCADE');
-            $table->foreign('media_uuid')->on('media')->references('uuid');
         });
     }
 

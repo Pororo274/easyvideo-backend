@@ -16,6 +16,8 @@ use Illuminate\Support\Collection;
 
 class VirtualMediaHelper
 {
+    const array TIMELINE_PROPERTIES = ['virtual_media.uuid as uuid', 'layer', 'type', 'global_start_time', 'start_time', 'duration'];
+    const array DIMENSIONS = ['x_position', 'y_position', 'width', 'height', 'crop_width', 'crop_height'];
 
     static function getDtoFromVirtualMedia(VirtualMedia $virtualMedia): VirtualMediaDto
     {

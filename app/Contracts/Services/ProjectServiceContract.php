@@ -4,6 +4,7 @@ namespace App\Contracts\Services;
 
 use App\Dto\Projects\CreateProjectDto;
 use App\Dto\Projects\ProjectDto;
+use App\FFMpeg\Dto\ExporterDto;
 use App\Models\Project;
 use Illuminate\Support\Collection;
 

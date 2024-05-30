@@ -4,11 +4,9 @@ namespace App\Services;
 
 use App\Contracts\Repositories\VirtualMediaRepositoryContract;
 use App\Contracts\Services\VirtualMediaServiceContract;
-use App\Dto\VirtualMedia\CreateDto\CreateVirtualMediaDto;
 use App\Dto\VirtualMedia\SyncVirtualMediaDto;
-use App\Dto\VirtualMedia\VirtualMediaDto;
+use App\Factories\VirtualMedia\VirtualMediaDtoFactory;
 use App\Helpers\VirtualMediaHelper;
-use App\Models\VirtualMedia;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
@@ -16,15 +14,12 @@ class VirtualMediaService implements VirtualMediaServiceContract
 {
     public function __construct(
         protected VirtualMediaRepositoryContract $virtualMediaRepo
-    ) {}
+    ) {
+    }
 
     public function findAllByProjectId(int $projectId): Collection
     {
-        $virtualMedias = $this->virtualMediaRepo->findAllByProjectId($projectId);
-
-        return $virtualMedias->map(function (VirtualMedia $virtualMedia) {
-            return VirtualMediaHelper::getDtoFromVirtualMedia($virtualMedia);
-        });
+        return $this->virtualMediaRepo->findAllByProjectId($projectId);
     }
 
     public function sync(SyncVirtualMediaDto $dto): Collection

@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Contracts\Services\ProjectServiceContract;
 use App\Dto\Projects\CreateProjectDto;
 use App\Dto\Projects\ProjectDto;
+use App\FFMpeg\Dto\ExporterDto;
+use App\Models\Media;
 use App\Models\Project;
 use Illuminate\Support\Collection;
 
@@ -13,6 +16,7 @@ class ProjectService implements ProjectServiceContract
 {
     public function __construct(
         protected ProjectRepositoryContract $projectRepo,
+        protected MediaRepositoryContract $mediaRepo
     ) {
     }
 

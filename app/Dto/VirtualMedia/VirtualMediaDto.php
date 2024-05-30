@@ -2,24 +2,21 @@
 
 namespace App\Dto\VirtualMedia;
 
-use App\Contracts\Repositories\MediaRepositoryContract;
-use App\Dto\TempMedia\TempMediaDto;
-use App\Repositories\MediaRepository;
+use App\Dto\Timeline\TimelineProperties;
+use App\FFMpeg\Filters\FFMpegFilterList;
+use App\FFMpeg\Media\Virtual\FFMpegVirtualMedia;
 
 readonly abstract class VirtualMediaDto
 {
+    public array $filters;
+
     public function __construct(
-        public string $uuid,
-        public int $layer,
-        public float $globalStartTime,
-        public float $startTime,
-        public float $duration,
-    ) {}
-
-    public abstract function createTempMedia(): TempMediaDto;
-
-    public function getEndTime(): float
-    {
-        return $this->startTime + $this->duration;
+        public TimelineProperties $timelineProperties,
+        protected FFMpegFilterList $filterList
+    ) {
+        $this->filters = $filterList->toKeyedArray();
     }
+
+    public abstract function toFFMpegVirtualMedia(): FFMpegVirtualMedia;
+    public abstract function toArray(): array;
 }
