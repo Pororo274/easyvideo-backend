@@ -10,6 +10,9 @@ use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\ProjectServiceContract;
 use App\Contracts\Services\UserServiceContract;
 use App\Contracts\Services\VirtualMediaServiceContract;
+use App\FFMpeg\Factories\Filters\FFMpegOverlayFilterFactory;
+use App\FFMpeg\Factories\Filters\FFMpegScaleFilterFactory;
+use App\FFMpeg\Factories\Filters\FFMpegTrimFilterFactory;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\UserRepository;
@@ -28,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->tag([FFMpegOverlayFilterFactory::class, FFMpegScaleFilterFactory::class, FFMpegTrimFilterFactory::class], 'videoFilterFactories');
+
         $this->app->bind(UserRepositoryContract::class, UserRepository::class);
         $this->app->bind(UserServiceContract::class, UserService::class);
 
@@ -46,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if(config('app.env') !== 'local') {
+        if (config('app.env') !== 'local') {
             URL::forceScheme('https');
         }
     }

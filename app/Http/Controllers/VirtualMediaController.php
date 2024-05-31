@@ -23,7 +23,7 @@ class VirtualMediaController extends Controller
 
         $syncedVirtualMedias = $virtualMediaService->sync(new SyncVirtualMediaDto(
             projectId: $projectId,
-            virtualMedias: collect($virtualMedias)
+            virtualMedias: $virtualMedias
         ));
 
         return response()->json($syncedVirtualMedias);

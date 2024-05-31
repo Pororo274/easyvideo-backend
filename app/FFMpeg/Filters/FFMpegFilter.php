@@ -2,7 +2,7 @@
 
 namespace App\FFMpeg\Filters;
 
-readonly abstract class FFMpegFilter
+abstract class FFMpegFilter
 {
     protected string $name;
 

@@ -4,31 +4,27 @@ namespace App\FFMpeg\Filters;
 
 use App\FFMpeg\Contracts\VideoFilter;
 use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Time;
 
-readonly class FFMpegOverlayFilter extends FFMpegFilter implements VideoFilter
+class FFMpegOverlayFilter extends FFMpegFilter implements VideoFilter
 {
     public function __construct(
-        public Position $position,
-        public ?float $startTime = null,
-        public ?float $endTime = null
+        protected Position $position,
+        protected Time $time
     ) {
         $this->name = 'OverlayFilter';
     }
 
     public function toString(): string
     {
-        if (is_null($this->startTime) && is_null($this->endTime)) {
-            return "overlay=" . $this->position->x . ":" . $this->position->y;
-        }
-
-        return "overlay=" . $this->position->x . ":" . $this->position->y . ":enable='between(t," . $this->startTime . ',' . $this->endTime . ")'";
+        return "overlay=" . $this->position->x . ":" . $this->position->y . ":enable='between(t," . $this->time->delay . ',' . ($this->time->delay + $this->time->duration) . ")'";
     }
 
     public function toArray(): array
     {
         return [
-            'x_position' => $this->position->x,
-            'y_position' => $this->position->y
+            'position' => $this->position,
+            'time' => $this->time
         ];
     }
 }

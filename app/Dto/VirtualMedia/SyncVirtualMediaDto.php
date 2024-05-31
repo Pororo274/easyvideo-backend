@@ -1,12 +1,12 @@
 <?php
-namespace App\Dto\VirtualMedia;
 
-use Illuminate\Support\Collection;
+namespace App\Dto\VirtualMedia;
 
 readonly class SyncVirtualMediaDto
 {
     public function __construct(
         public int $projectId,
-        public Collection $virtualMedias
-    ) {}
+        public array $virtualMedias
+    ) {
+    }
 }

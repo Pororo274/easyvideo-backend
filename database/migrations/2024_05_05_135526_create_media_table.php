@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique();
+            $table->string('uuid')->unique();
             $table->string('path');
             $table->boolean('is_uploaded')->default(false);
             $table->foreignId('project_id')->constrained();

@@ -2,21 +2,26 @@
 
 namespace App\Enums\VirtualMedia;
 
-use App\Factories\VirtualMedia\VirtualImageDtoFactory;
-use App\Factories\VirtualMedia\VirtualMediaDtoFactory;
-use App\Factories\VirtualMedia\VirtualVideoDtoFactory;
-use App\Models\VirtualMedia;
+use App\Dto\VirtualMedia\VirtualVideoDto;
 
 enum VirtualMediaTypeEnum: string
 {
-    case VirtualVideo = 'virtual_video';
-    case VirtualImage = 'virtual_image';
+    case Video = 'video';
+    case Audio = 'audio';
+    case Image = 'image';
+    case Custom = 'custom';
 
-    public function getFactory(VirtualMedia $virtualMedia): VirtualMediaDtoFactory
+    public function toDtoClass(): string
     {
         return match ($this) {
-            self::VirtualVideo => new VirtualVideoDtoFactory($virtualMedia),
-            self::VirtualImage => new VirtualImageDtoFactory($virtualMedia)
+            self::Video => VirtualVideoDto::class
+        };
+    }
+
+    public function getTag(): string
+    {
+        return match ($this) {
+            self::Video => 'videoFilterFactories'
         };
     }
 }

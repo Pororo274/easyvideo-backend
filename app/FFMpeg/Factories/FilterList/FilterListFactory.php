@@ -33,7 +33,7 @@ class FilterListFactory
         $filterList = new FFMpegFilterList();
 
         foreach ($this->filterFactories as $factory) {
-            $filter = $factory->createFromArray($vm);
+            $filter = $factory->createFilterFromArray($vm);
 
             $filterList->addFilter($filter);
         }

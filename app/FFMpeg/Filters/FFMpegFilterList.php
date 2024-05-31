@@ -50,7 +50,7 @@ class FFMpegFilterList
     {
         return $this->filters->mapWithKeys(function (FFMpegFilter $filter) {
             return [
-                $filter->getName() => $filter
+                $filter->getName() => $filter->toArray()
             ];
         })->all();
     }

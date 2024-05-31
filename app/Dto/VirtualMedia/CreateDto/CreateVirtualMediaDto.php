@@ -2,22 +2,17 @@
 
 namespace App\Dto\VirtualMedia\CreateDto;
 
-use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
 
 readonly class CreateVirtualMediaDto
 {
     public function __construct(
         public string $uuid,
+        public int $projectId,
         public int $layer,
-        public float $globalStartTime,
-        public float $startTime,
-        public float $duration,
-        public float $projectId,
+        public VirtualMediaTypeEnum $contentType,
+        public string $content,
+        public array $filters
     ) {
     }
-
-    public abstract function getType(): VirtualMediaTypeEnum;
-
-    public abstract function store(): VirtualMediaDto;
 }

@@ -2,16 +2,16 @@
 
 namespace App\Contracts\Repositories;
 
+use App\Dto\VirtualMedia\CreateDto\CreateVirtualMediaDto;
 use App\Dto\VirtualMedia\UpdateDto\UpdateVirtualMediaDto;
-use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\Models\VirtualMedia;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface VirtualMediaRepositoryContract
 {
-    public function store(array $vm, int $projectId): VirtualMediaDto;
+    public function store(CreateVirtualMediaDto $dt): VirtualMedia;
     public function findAllByProjectId(int $projectId): Collection;
-    public function update(UpdateVirtualMediaDto $dto): VirtualMediaDto;
+    public function update(UpdateVirtualMediaDto $dto): VirtualMedia;
     public function deleteByUuid(string $uuid): void;
     public function findByUuid(string $uuid): VirtualMedia;
 }
