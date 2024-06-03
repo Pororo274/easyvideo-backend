@@ -2,6 +2,7 @@
 
 namespace App\Enums\VirtualMedia;
 
+use App\Dto\VirtualMedia\VirtualImageDto;
 use App\Dto\VirtualMedia\VirtualVideoDto;
 
 enum VirtualMediaTypeEnum: string
@@ -14,14 +15,16 @@ enum VirtualMediaTypeEnum: string
     public function toDtoClass(): string
     {
         return match ($this) {
-            self::Video => VirtualVideoDto::class
+            self::Video => VirtualVideoDto::class,
+            self::Image => VirtualImageDto::class
         };
     }
 
     public function getTag(): string
     {
         return match ($this) {
-            self::Video => 'videoFilterFactories'
+            self::Video => 'videoFilterFactories',
+            self::Image => 'videoFilterFactories'
         };
     }
 }

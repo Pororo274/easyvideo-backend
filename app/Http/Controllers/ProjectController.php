@@ -10,7 +10,6 @@ use App\Dto\Projects\ProjectRenderJobDto;
 use App\Dto\VirtualMedia\VirtualImageDto;
 use App\Dto\VirtualMedia\VirtualVideoDto;
 use App\Enums\Projects\ProjectConfigEnum;
-use App\Helpers\VirtualMediaHelper;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Http\Requests\Project\RenderRequest;
 use App\Jobs\ProjectRenderJob;

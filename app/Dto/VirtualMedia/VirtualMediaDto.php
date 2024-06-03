@@ -4,7 +4,7 @@ namespace App\Dto\VirtualMedia;
 
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
 use App\FFMpeg\Filters\FFMpegFilterList;
-use App\FFMpeg\Media\Virtual\FFMpegVirtualMedia;
+use App\FFMpeg\Media\Inputs\FFMpegInput;
 
 readonly abstract class VirtualMediaDto
 {
@@ -21,5 +21,5 @@ readonly abstract class VirtualMediaDto
         $this->filters = $filterList->toKeyedArray();
     }
 
-    public abstract function toFFMpegVirtualMedia(): FFMpegVirtualMedia;
+    public abstract function getFFMpegInput(): FFMpegInput;
 }

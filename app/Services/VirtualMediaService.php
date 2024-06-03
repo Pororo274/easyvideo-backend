@@ -9,7 +9,6 @@ use App\Dto\VirtualMedia\CreateDto\CreateVirtualMediaDto;
 use App\Dto\VirtualMedia\SyncVirtualMediaDto;
 use App\Dto\VirtualMedia\UpdateDto\UpdateVirtualMediaDto;
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
-use App\Helpers\VirtualMediaHelper;
 use App\Models\VirtualMedia;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;

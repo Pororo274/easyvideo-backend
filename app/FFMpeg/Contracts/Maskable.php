@@ -2,7 +2,7 @@
 
 namespace App\FFMpeg\Contracts;
 
-interface InputableMask
+interface Maskable
 {
     public function toRawMask(): string;
 }

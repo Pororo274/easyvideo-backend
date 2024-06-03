@@ -4,6 +4,7 @@ namespace App\FFMpeg\Filters;
 
 use App\FFMpeg\Contracts\AudioFilter;
 use App\FFMpeg\Contracts\VideoFilter;
+use App\FFMpeg\Media\Streams\FFMpegStream;
 use Illuminate\Support\Collection;
 
 class FFMpegFilterList
@@ -21,18 +22,11 @@ class FFMpegFilterList
         $this->filters->add($filter);
     }
 
-    public function getAudioFilters(): Collection
+    public function getFiltersByStream(FFMpegStream $stream): array
     {
-        return $this->filters->filter(function (FFMpegFilter $filter) {
-            return $filter instanceof AudioFilter;
-        });
-    }
-
-    public function getVideoFilters(): Collection
-    {
-        return $this->filters->filter(function (FFMpegFilter $filter) {
-            return $filter instanceof VideoFilter;
-        });
+        return $this->filters->filter(function (FFMpegFilter $filter) use ($stream) {
+            return $filter instanceof ($stream->getFilterType());
+        })->all();
     }
 
     public static function fromArrayToFilterList(array $filters): FFMpegFilterList

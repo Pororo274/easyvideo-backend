@@ -2,25 +2,22 @@
 
 namespace App\Jobs;
 
+use App\Contracts\Services\VirtualMediaServiceContract;
 use App\Dto\FFMpeg\CreateBlankVideoDto;
 use App\Dto\Projects\ProjectRenderJobDto;
-use App\Dto\Projects\RenderJobEndedDto;
 use App\Dto\TempMedia\TempImageDto;
 use App\Dto\TempMedia\TempMediaDto;
 use App\Dto\VirtualMedia\VirtualMediaDto;
-use App\Events\RenderJobEndedEvent;
 use App\FFMpeg\Coordinate\Position;
 use App\FFMpeg\Coordinate\Size;
-use App\FFMpeg\Export\FFMpegExporter;
+use App\FFMpeg\graph\FFMpegGraph;
 use App\Helpers\FFMpegHelper;
-use App\Helpers\MediaHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use Laravel\Reverb\Loggers\Log;
 
 class ProjectRenderJob implements ShouldQueue
 {
@@ -97,8 +94,19 @@ class ProjectRenderJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(VirtualMediaServiceContract $virtualMediaService): void
     {
+        $virtualMedias = $virtualMediaService->findAllByProjectId($this->dto->projectId);
+
+        $graph = new FFMpegGraph();
+
+        $virtualMedias->each(function (VirtualMediaDto $dto) use ($graph) {
+            $graph->addVirtualMedia($dto);
+        });
+
+        $graph->buildGraphPlan();
+        $output = $graph->execute();
+
         // $tempMedias = $this->mediaStep();
         // $output = $this->mergeStep($tempMedias);
         // \Illuminate\Support\Facades\Log::debug('Rendered');
@@ -109,9 +117,5 @@ class ProjectRenderJob implements ShouldQueue
         // ));
 
         // MediaHelper::removeTempMedias($tempMedias);
-
-
-        $exporter = new FFMpegExporter();
-        $exporter->export();
     }
 }

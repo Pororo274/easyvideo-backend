@@ -2,12 +2,20 @@
 
 namespace App\FFMpeg\Filterchain;
 
-use App\FFMpeg\Contracts\InputableMask;
+use App\FFMpeg\Contracts\Maskable;
+use Illuminate\Support\Str;
 
-class FFMpegFilterchainOutput implements InputableMask
+class FFMpegFilterchainOutput implements Maskable
 {
+    protected string $outputName;
+
+    public function __construct(
+    ) {
+        $this->outputName = Str::random(10);
+    }
+
     public function toRawMask(): string
     {
-        return '';
+        return '['.$this->outputName.']';
     }
 }
