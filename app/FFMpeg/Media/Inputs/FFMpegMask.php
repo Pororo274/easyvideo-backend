@@ -1,14 +1,13 @@
 <?php
 
-namespace App\FFMpeg\Filterchain;
+namespace App\FFMpeg\Media\Inputs;
 
 use App\FFMpeg\Contracts\Maskable;
-use Illuminate\Support\Str;
 
-class FFMpegFilterchainOutput implements Maskable
+class FFMpegMask implements Maskable
 {
     public function __construct(
-        protected Maskable $mask
+        protected string $mask
     ) {
     }
 

@@ -10,7 +10,7 @@ use App\Dto\TempMedia\TempMediaDto;
 use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\FFMpeg\Coordinate\Position;
 use App\FFMpeg\Coordinate\Size;
-use App\FFMpeg\graph\FFMpegGraph;
+use App\FFMpeg\Graph\FFMpegGraph;
 use App\Helpers\FFMpegHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,12 +35,12 @@ class ProjectRenderJob implements ShouldQueue
     /**
      * @return Collection<TempMediaDto>
      */
-    protected function mediaStep(): Collection
-    {
-        return $this->dto->virtualMedias->map(function (VirtualMediaDto $virtualMedia) {
-            return $virtualMedia->createTempMedia();
-        });
-    }
+    // protected function mediaStep(): Collection
+    // {
+    //     return $this->dto->virtualMedias->map(function (VirtualMediaDto $virtualMedia) {
+    //         return $virtualMedia->createTempMedia();
+    //     });
+    // }
 
     /**
      * @param Collection<TempMediaDto> $tempMedias
@@ -96,16 +96,17 @@ class ProjectRenderJob implements ShouldQueue
      */
     public function handle(VirtualMediaServiceContract $virtualMediaService): void
     {
-        $virtualMedias = $virtualMediaService->findAllByProjectId($this->dto->projectId);
+        $virtualMedias = $virtualMediaService->findAllByProjectId($this->dto->projectId)->all();
 
         $graph = new FFMpegGraph();
 
-        $virtualMedias->each(function (VirtualMediaDto $dto) use ($graph) {
+        foreach ($virtualMedias as $dto) {
             $graph->addVirtualMedia($dto);
-        });
+        }
 
-        $graph->buildGraphPlan();
-        $output = $graph->execute();
+        $graph
+            ->buildGraphPlan()
+            ->execute("outputs/output.mp4");
 
         // $tempMedias = $this->mediaStep();
         // $output = $this->mergeStep($tempMedias);

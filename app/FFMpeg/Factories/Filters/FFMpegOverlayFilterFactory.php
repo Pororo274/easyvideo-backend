@@ -6,6 +6,7 @@ use App\FFMpeg\Coordinate\Position;
 use App\FFMpeg\Coordinate\Time;
 use App\FFMpeg\Filters\FFMpegFilter;
 use App\FFMpeg\Filters\FFMpegOverlayFilter;
+use Illuminate\Support\Facades\Log;
 
 class FFMpegOverlayFilterFactory implements FFMpegFilterFactory
 {

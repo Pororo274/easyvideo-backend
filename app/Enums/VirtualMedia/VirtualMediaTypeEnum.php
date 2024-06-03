@@ -24,7 +24,8 @@ enum VirtualMediaTypeEnum: string
     {
         return match ($this) {
             self::Video => 'videoFilterFactories',
-            self::Image => 'videoFilterFactories'
+            self::Image => 'imageFilterFactories',
+            self::Audio => 'audioFilterFactories'
         };
     }
 }

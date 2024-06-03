@@ -10,6 +10,8 @@ use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\ProjectServiceContract;
 use App\Contracts\Services\UserServiceContract;
 use App\Contracts\Services\VirtualMediaServiceContract;
+use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
+use App\FFMpeg\Factories\Filters\FFMpegATrimFilterFactory;
 use App\FFMpeg\Factories\Filters\FFMpegOverlayFilterFactory;
 use App\FFMpeg\Factories\Filters\FFMpegScaleFilterFactory;
 use App\FFMpeg\Factories\Filters\FFMpegTrimFilterFactory;
@@ -31,7 +33,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->tag([FFMpegOverlayFilterFactory::class, FFMpegScaleFilterFactory::class, FFMpegTrimFilterFactory::class], 'videoFilterFactories');
+        $videoFilterFactories = [FFMpegOverlayFilterFactory::class, FFMpegScaleFilterFactory::class, FFMpegTrimFilterFactory::class];
+        $audioFilterFactories = [FFMpegATrimFilterFactory::class];
+
+
+        $this->app->tag([...$videoFilterFactories, ...$audioFilterFactories], 'videoFilterFactories');
+        $this->app->tag([...$audioFilterFactories], 'audioFilterFactories');
+        $this->app->tag([...$videoFilterFactories], VirtualMediaTypeEnum::Image->getTag());
 
         $this->app->bind(UserRepositoryContract::class, UserRepository::class);
         $this->app->bind(UserServiceContract::class, UserService::class);

@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class FFMpegFilterchain implements Executable
 {
-    protected array $outputs;
+    protected array $outputs = [];
 
     /**
      * @param Maskable[] $inputs
@@ -21,9 +21,11 @@ class FFMpegFilterchain implements Executable
     ) {
     }
 
-    public function addOutput(): void
+    public function addOutputs(Maskable ...$outputs): self
     {
-        $this->outputs = [...$this->outputs, new FFMpegFilterchainOutput];
+        $this->outputs = [...$this->outputs, ...$outputs];
+
+        return $this;
     }
 
     public function getInputs(): array
@@ -38,6 +40,9 @@ class FFMpegFilterchain implements Executable
         }, ',');
     }
 
+    /**
+     * @return Maskable[]
+     */
     public function getOutputs(): array
     {
         return $this->outputs;

@@ -40,9 +40,8 @@ class ProjectController extends Controller
         return response()->json(ProjectConfigEnum::getConfigs());
     }
 
-    public function render(int $projectId, VirtualMediaServiceContract $virtualMediaService, ProjectServiceContract $projectService)
+    public function render(int $projectId, ProjectServiceContract $projectService)
     {
-        $virtualMedias = $virtualMediaService->findAllByProjectId($projectId);
         $project = $projectService->findById($projectId);
 
         ProjectRenderJob::dispatch(new ProjectRenderJobDto(
@@ -50,10 +49,11 @@ class ProjectController extends Controller
             projectId: $projectId,
             width: $project->width,
             height: $project->height,
-            virtualMedias: $virtualMedias
         ));
 
-        return response()->json($virtualMedias);
+        return response()->json([
+            'status' => 'Exporting...'
+        ]);
     }
 
     public function getAllByUserId(int $userId, ProjectServiceContract $projectService): JsonResponse

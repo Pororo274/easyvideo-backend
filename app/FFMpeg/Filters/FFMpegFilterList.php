@@ -22,9 +22,17 @@ class FFMpegFilterList
         $this->filters->add($filter);
     }
 
-    public function getFiltersByStream(FFMpegStream $stream): array
+    public function getFiltersByStream(FFMpegStream $stream, array $except = []): array
     {
-        return $this->filters->filter(function (FFMpegFilter $filter) use ($stream) {
+        return $this->filters->filter(function (FFMpegFilter $filter) use ($stream, $except) {
+            $can = collect($except)->first(function (string $candidate) use ($filter) {
+                return $filter instanceof ($candidate);
+            });
+
+            if ($can) {
+                return false;
+            }
+
             return $filter instanceof ($stream->getFilterType());
         })->all();
     }

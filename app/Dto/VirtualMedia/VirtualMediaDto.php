@@ -21,5 +21,10 @@ readonly abstract class VirtualMediaDto
         $this->filters = $filterList->toKeyedArray();
     }
 
+    public function getFilterList(): FFMpegFilterList
+    {
+        return $this->filterList;
+    }
+
     public abstract function getFFMpegInput(): FFMpegInput;
 }

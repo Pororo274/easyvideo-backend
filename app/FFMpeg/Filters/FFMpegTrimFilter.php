@@ -16,7 +16,7 @@ class FFMpegTrimFilter extends FFMpegFilter implements VideoFilter
 
     public function toString(): string
     {
-        return 'trim=' . $this->time->startFrom . ':' . $this->time->duration;
+        return 'trim=' . $this->time->startFrom . ':' . ($this->time->startFrom + $this->time->duration)  . ',setpts=PTS-STARTPTS';
     }
 
     public function toArray(): array

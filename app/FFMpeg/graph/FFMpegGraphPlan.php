@@ -1,5 +1,7 @@
 <?php
 
+namespace App\FFMpeg\Graph;
+
 class FFMpegGraphPlan
 {
     protected string $output;
@@ -7,8 +9,7 @@ class FFMpegGraphPlan
     public function __construct(
         protected array $inputs,
         protected array $filterchains,
-    )
-    {
+    ) {
     }
 
     public function setOutput(string $output): void

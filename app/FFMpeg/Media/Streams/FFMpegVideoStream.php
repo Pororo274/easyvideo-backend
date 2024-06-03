@@ -9,4 +9,9 @@ class FFMpegVideoStream extends FFMpegStream
 {
     protected string $filterType = VideoFilter::class;
     protected string $mask = 'v';
+
+    public function createStream(): FFMpegStream
+    {
+        return new self();
+    }
 }
