@@ -33,11 +33,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $videoFilterFactories = [FFMpegOverlayFilterFactory::class, FFMpegScaleFilterFactory::class, FFMpegTrimFilterFactory::class];
+        $videoStreamFilterFactories = [FFMpegTrimFilterFactory::class];
+        $videoFilterFactories = [FFMpegOverlayFilterFactory::class, FFMpegScaleFilterFactory::class,];
         $audioFilterFactories = [FFMpegATrimFilterFactory::class];
 
 
-        $this->app->tag([...$videoFilterFactories, ...$audioFilterFactories], 'videoFilterFactories');
+        $this->app->tag([...$videoFilterFactories, ...$audioFilterFactories, ...$videoStreamFilterFactories], 'videoFilterFactories');
         $this->app->tag([...$audioFilterFactories], 'audioFilterFactories');
         $this->app->tag([...$videoFilterFactories], VirtualMediaTypeEnum::Image->getTag());
 
