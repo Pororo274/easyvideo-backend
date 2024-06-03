@@ -17,4 +17,9 @@ class UserRepository implements UserRepositoryContract
             'email' => $dto->email
         ]);
     }
+
+    public function findById(int $userId): User
+    {
+        return User::query()->findOrFail($userId);
+    }
 }

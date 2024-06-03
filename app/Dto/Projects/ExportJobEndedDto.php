@@ -2,7 +2,7 @@
 
 namespace App\Dto\Projects;
 
-readonly class RenderJobEndedDto
+readonly class ExportJobEndedDto
 {
     public function __construct(
         public int $userId,

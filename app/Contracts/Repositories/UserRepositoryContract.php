@@ -8,4 +8,5 @@ use App\Models\User;
 interface UserRepositoryContract
 {
     public function store(CreateUserDto $dto): User;
+    public function findById(int $userId): User;
 }

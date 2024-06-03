@@ -72,6 +72,6 @@ class ProjectController extends Controller
 
     public function downloadOutputFile(string $filename)
     {
-        return response()->download(Storage::path("temp-media/{$filename}"), $filename);
+        return response()->download(Storage::path("outputs/{$filename}"), $filename);
     }
 }

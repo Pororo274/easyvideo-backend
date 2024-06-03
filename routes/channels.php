@@ -7,6 +7,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('projects.{userId}', function (User $user, int $userId) {
+Broadcast::channel('users.{userId}', function (User $user, int $userId) {
     return $user->id === $userId;
 });
