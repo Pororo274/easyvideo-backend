@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Dto\Projects\CreateProjectDto;
+use App\Dto\Projects\UpdateProjectPreviewDto;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -28,5 +29,14 @@ class ProjectRepository implements ProjectRepositoryContract
     public function findById(int $projectId): Project
     {
         return Project::query()->find($projectId);
+    }
+
+    public function updatePreview(UpdateProjectPreviewDto $dto): Project
+    {
+        Project::query()->where('id', $dto->projectId)->update([
+            'preview' => $dto->preview
+        ]);
+
+        return $this->findById($dto->projectId);
     }
 }

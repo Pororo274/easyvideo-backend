@@ -4,20 +4,26 @@ namespace App\Services;
 
 use App\Console\Commands\CreateMedia;
 use App\Contracts\Repositories\MediaRepositoryContract;
+use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Contracts\Services\MediaServiceContract;
 use App\Dto\Media\CreateMediaDto;
 use App\Dto\Media\SaveChunkDto;
+use App\Dto\Projects\UpdateProjectPreviewDto;
+use App\Helpers\FFMpegHelper;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Support\Str;
 
 class MediaService implements MediaServiceContract
 {
     public function __construct(
-        protected MediaRepositoryContract $mediaRepo
+        protected MediaRepositoryContract $mediaRepo,
+        protected ProjectRepositoryContract $projectRepo
     ) {
     }
 
@@ -40,12 +46,20 @@ class MediaService implements MediaServiceContract
                 ));
             }
 
-            if ($dto->last) {
-                $media = $this->mediaRepo->updateUploadStatusByUuid($dto->mediaUuid, true);
-            }
+
 
             $absolutePath = Storage::disk('local')->path($media->path);
             File::append($absolutePath, $chunk->get());
+
+            if ($dto->last) {
+                $media = $this->mediaRepo->updateUploadStatusByUuid($dto->mediaUuid, true);
+                $framePath = "previews/" . Str::random() . ".jpg";
+                FFMpegHelper::saveFrameBySeconds($media->path, $framePath, 0);
+                $this->projectRepo->updatePreview(new UpdateProjectPreviewDto(
+                    projectId: $media->project_id,
+                    preview: $framePath
+                ));
+            }
 
             return $media;
         });

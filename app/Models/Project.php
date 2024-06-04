@@ -50,6 +50,7 @@ class Project extends Model
             height: $this->height,
             fps: $this->fps,
             userId: $this->user_id,
+            preview: $this->preview ? asset($this->preview) : null,
             createdAt: $this->updated_at
         );
     }

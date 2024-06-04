@@ -33,7 +33,7 @@ class FFMpegHelper
             ->open(static::BLANK_PATH)
             ->addFilter('-t', $dto->duration)
             ->addFilter('-shortest')
-            ->addFilter('-vf', 'scale=' . $dto->width. ':' . $dto->height .',setdar=16/9')
+            ->addFilter('-vf', 'scale=' . $dto->width . ':' . $dto->height . ',setdar=16/9')
             ->addFilter('-pix_fmt', 'yuv420p')
             ->export()
             ->inFormat($format)
@@ -48,5 +48,10 @@ class FFMpegHelper
             size: new Size($dto->width, $dto->height),
             position: new Position(0, 0)
         );
+    }
+
+    public static function saveFrameBySeconds(string $video, string $path, int $seconds): void
+    {
+        FFMpeg::fromDisk('local')->open($video)->getFrameFromSeconds($seconds)->export()->toDisk('local')->save($path);
     }
 }

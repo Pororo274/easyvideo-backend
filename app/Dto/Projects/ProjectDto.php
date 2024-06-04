@@ -14,6 +14,8 @@ readonly class ProjectDto
         public int $height,
         public int $fps,
         public int $userId,
+        public ?string $preview,
         public Carbon $createdAt
-    ) {}
+    ) {
+    }
 }
