@@ -23,7 +23,6 @@ Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(f
         Route::get('/download/{filename}', 'downloadOutputFile');
         Route::post('{projectId}/render', 'render');
         Route::get('{projectId}', 'findById');
-
     });
 });
 
@@ -46,8 +45,10 @@ Route::controller(VirtualMediaController::class)->group(function () {
 });
 
 Route::controller(AuthController::class)->prefix('auth')->group(function () {
-    Route::post('sign-up', 'signUp');
-    Route::post('login', 'login');
+    Route::middleware('guest')->group(function () {
+        Route::post('sign-up', 'signUp');
+        Route::post('login', 'login');
+    });
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', 'logout');
