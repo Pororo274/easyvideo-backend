@@ -38,7 +38,7 @@ class Project extends Model
 
     protected $fillable = [
         'name', 'width', 'height', 'fps', 'user_id',
-        'updated_at'
+        'updated_at', 'preview'
     ];
 
     public function toDto(): ProjectDto
