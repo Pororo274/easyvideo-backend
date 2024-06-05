@@ -51,9 +51,7 @@ class FFMpegFilterList
     public function toKeyedArray(): array
     {
         return $this->filters->mapWithKeys(function (FFMpegFilter $filter) {
-            return [
-                $filter->getName() => $filter->toArray()
-            ];
+            return $filter->toArray();
         })->all();
     }
 

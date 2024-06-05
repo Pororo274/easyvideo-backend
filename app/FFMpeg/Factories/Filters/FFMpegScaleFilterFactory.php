@@ -8,17 +8,10 @@ use App\FFMpeg\Filters\FFMpegScaleFilter;
 
 class FFMpegScaleFilterFactory implements FFMpegFilterFactory
 {
-    public function createFilterFromModel(mixed $vm): FFMpegFilter
-    {
-        return new FFMpegScaleFilter(
-            new Size($vm->width, $vm->height)
-        );
-    }
-
     public function createFilterFromArray(array $arr): FFMpegFilter
     {
         return new FFMpegScaleFilter(
-            new Size($arr['ScaleFilter']['size']['width'], $arr['ScaleFilter']['size']['height'])
+            new Size($arr['size']['width'], $arr['size']['height'])
         );
     }
 }

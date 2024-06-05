@@ -14,8 +14,8 @@ class FFMpegOverlayFilterFactory implements FFMpegFilterFactory
     public function createFilterFromArray(array $arr): FFMpegFilter
     {
         return new FFMpegOverlayFilter(
-            new Position($arr['OverlayFilter']['position']['x'], $arr['OverlayFilter']['position']['y']),
-            new Time($arr['OverlayFilter']['time']['delay'], $arr['OverlayFilter']['time']['startFrom'], $arr['OverlayFilter']['time']['duration'])
+            new Position($arr['position']['x'], $arr['position']['y']),
+            new Time($arr['time']['delay'], $arr['time']['startFrom'], $arr['time']['duration'])
         );
     }
 }

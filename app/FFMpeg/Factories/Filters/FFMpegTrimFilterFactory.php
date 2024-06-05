@@ -11,7 +11,7 @@ class FFMpegTrimFilterFactory implements FFMpegFilterFactory
     public function createFilterFromArray(array $arr): FFMpegFilter
     {
         return new FFMpegTrimFilter(
-            new Time($arr['TrimFilter']['time']['delay'], $arr['TrimFilter']['time']['startFrom'], $arr['TrimFilter']['time']['duration'])
+            new Time($arr['time']['delay'], $arr['time']['startFrom'], $arr['time']['duration'])
         );
     }
 }
