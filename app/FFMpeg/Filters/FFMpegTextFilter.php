@@ -16,7 +16,7 @@ class FFMpegTextFilter extends FFMpegFilter implements VideoFilter
 
     public function toString(): string
     {
-        return '';
+        return 'drawtext=text=' . $this->text . ":fontsize=" . $this->fontSize . ":fontcolor=white";
     }
 
     public function toArray(): array

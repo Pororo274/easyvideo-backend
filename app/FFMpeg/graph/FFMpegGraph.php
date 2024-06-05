@@ -114,7 +114,9 @@ class FFMpegGraph
         $paths = $paths->values();
 
         $inputFilterchains = $paths->map(function (string $path, int $key) use ($groupedByPath) {
-            $inputs = $groupedByPath->get($path);
+            $inputs = $groupedByPath->get($path, collect());
+
+            $beforeSplitFilters = $inputs->get(0)->beforeSplitFilers;
 
             $streams = $inputs->map(function (FFMpegInput $input) {
                 return $input->streams;
@@ -122,10 +124,11 @@ class FFMpegGraph
 
             $filterchains = collect($streams)->groupBy(function (FFMpegStream $stream) {
                 return $stream->getMask();
-            })->map(function (Collection $streams, string $mask) use ($key) {
+            })->map(function (Collection $streams, string $mask) use ($key, $beforeSplitFilters) {
                 $splitFilter = $mask === 'v' ? new FFMpegSplitFilter($streams->count()) : new FFMpegASplitFilter($streams->count());
 
                 $filterchain = (new FFMpegFilterchain([new FFMpegMask('[' . $key . ':' . $mask . ']')], [
+                    ...$beforeSplitFilters,
                     $splitFilter
                 ]))->addOutputs(...$streams);
                 return $filterchain;

@@ -14,7 +14,8 @@ readonly class FFMpegInput
      */
     public function __construct(
         public string $path,
-        public array $streams
+        public array $streams,
+        public array $beforeSplitFilters = []
     ) {
     }
 
