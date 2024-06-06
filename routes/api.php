@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\VirtualMediaController;
 use Illuminate\Http\Request;
@@ -42,6 +43,10 @@ Route::controller(VirtualMediaController::class)->group(function () {
         Route::get('', 'findAllByProjectId');
         Route::post('sync', 'sync');
     });
+});
+
+Route::controller(UserController::class)->prefix('users')->group(function () {
+    Route::get('{userId}/notifications', 'findAllNotifications');
 });
 
 Route::controller(AuthController::class)->prefix('auth')->group(function () {

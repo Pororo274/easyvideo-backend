@@ -50,13 +50,11 @@ class VirtualMedia extends Model implements ProjectUpdatedContract
     public function toDto(): VirtualMediaDto
     {
         $dtoClass = $this->content_type->toDtoClass();
-        $factories = collect(App::tagged($this->content_type->getTag()))->toArray();
-
 
         return app($dtoClass, [
             'contentType' => $this->content_type,
             'content' => $this->content,
-            'filterList' => (new FilterListFactory(...$factories))->createFromArray($this->filters),
+            'filters' => $this->filters,
             'layer' => $this->layer,
             'projectId' => $this->project_id,
             'uuid' => $this->uuid,

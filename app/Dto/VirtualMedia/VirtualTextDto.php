@@ -15,7 +15,7 @@ readonly class VirtualTextDto extends VirtualMediaDto
         $project = Project::query()->where('id', $this->projectId)->first();
 
         return new FFMpegInput(
-            path: "helpers/blank.jpg",
+            path: "helpers/anaconda.png",
             streams: [new FFMpegVideoStream],
             beforeSplitFilters: [new FFMpegScaleFilter(
                 new Size($project->width, $project->height)

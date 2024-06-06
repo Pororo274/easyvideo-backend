@@ -6,6 +6,7 @@ use App\FFMpeg\Contracts\AudioFilter;
 use App\FFMpeg\Contracts\VideoFilter;
 use App\FFMpeg\Media\Streams\FFMpegStream;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class FFMpegFilterList
 {

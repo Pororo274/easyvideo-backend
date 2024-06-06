@@ -3,12 +3,15 @@
 namespace App\Dto\VirtualMedia;
 
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
+use App\FFMpeg\Factories\FilterList\FilterListFactory;
 use App\FFMpeg\Filters\FFMpegFilterList;
 use App\FFMpeg\Media\Inputs\FFMpegInput;
+use Illuminate\Support\Facades\App;
 
 readonly abstract class VirtualMediaDto
 {
-    public array $filters;
+    protected FFMpegFilterList $filterList;
+
 
     public function __construct(
         public string $uuid,
@@ -16,14 +19,13 @@ readonly abstract class VirtualMediaDto
         public int $layer,
         public VirtualMediaTypeEnum $contentType,
         public string $content,
-        protected FFMpegFilterList $filterList
+        public array $filters
     ) {
-        $this->filters = $filterList->toKeyedArray();
     }
 
     public function getFilterList(): FFMpegFilterList
     {
-        return $this->filterList;
+        return (new FilterListFactory(...App::tagged($this->contentType->getTag())))->createFromArray($this->filters);
     }
 
     public abstract function getFFMpegInput(): FFMpegInput;

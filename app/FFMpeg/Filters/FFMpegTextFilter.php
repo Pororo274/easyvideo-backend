@@ -4,6 +4,8 @@ namespace App\FFMpeg\Filters;
 
 use App\FFMpeg\Contracts\VideoFilter;
 use App\FFMpeg\Filters\FFMpegFilter;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FFMpegTextFilter extends FFMpegFilter implements VideoFilter
 {
@@ -16,7 +18,9 @@ class FFMpegTextFilter extends FFMpegFilter implements VideoFilter
 
     public function toString(): string
     {
-        return 'drawtext=text=' . $this->text . ":fontsize=" . $this->fontSize . ":fontcolor=white";
+        $path = "C\\\\:/Windows/fonts/consola.ttf";
+
+        return "drawtext=fontfile=".$path . ":text='" . $this->text . "':fontsize=" . $this->fontSize . ":fontcolor=white";
     }
 
     public function toArray(): array

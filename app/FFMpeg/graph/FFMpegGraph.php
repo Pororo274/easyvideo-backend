@@ -85,7 +85,7 @@ class FFMpegGraph
 
                 if ($stream->getMask() === 'v') {
                     $mergeFilterchain = new FFMpegFilterchain([$this->lastVideoOutput, $newStream], [
-                        (new FFMpegOverlayFilterFactory)->createFilterFromArray($vm->getFilterList()->toKeyedArray())
+                        (new FFMpegOverlayFilterFactory)->createFilterFromArray($vm->filters)
                     ]);
 
                     $outputStream = $newStream->createStream();
@@ -116,7 +116,7 @@ class FFMpegGraph
         $inputFilterchains = $paths->map(function (string $path, int $key) use ($groupedByPath) {
             $inputs = $groupedByPath->get($path, collect());
 
-            $beforeSplitFilters = $inputs->get(0)->beforeSplitFilers;
+            $beforeSplitFilters = $inputs->get(0)->beforeSplitFilters;
 
             $streams = $inputs->map(function (FFMpegInput $input) {
                 return $input->streams;

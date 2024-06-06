@@ -8,6 +8,7 @@ use App\Dto\Auth\LoginUserDto;
 use App\Dto\User\CreateUserDto;
 use App\Exceptions\LoginInvalidCredentialsException;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class UserService implements UserServiceContract
@@ -48,5 +49,10 @@ class UserService implements UserServiceContract
     public function logout(): void
     {
         Auth::guard("web")->logout();
+    }
+
+    public function findAllUnreadNotificationsByUserId(int $userId): Collection
+    {
+        return $this->userRepo->findAllUnreadNotificationsByUserId($userId);
     }
 }
