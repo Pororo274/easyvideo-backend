@@ -14,4 +14,13 @@ class UserController extends Controller
 
         return response()->json($notifications);
     }
+
+    public function markAsReadNotification(int $userId, string $notificationId, UserServiceContract $userService): JsonResponse
+    {
+        $userService->markNotificationAsRead($userId, $notificationId);
+
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

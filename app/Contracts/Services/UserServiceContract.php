@@ -13,4 +13,5 @@ interface UserServiceContract
     public function login(LoginUserDto $dto): User;
     public function logout(): void;
     public function findAllUnreadNotificationsByUserId(int $userId): Collection;
+    public function markNotificationAsRead(int $userId,  string $notificationId): void;
 }

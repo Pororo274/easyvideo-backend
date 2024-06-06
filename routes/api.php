@@ -47,6 +47,7 @@ Route::controller(VirtualMediaController::class)->group(function () {
 
 Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::get('{userId}/notifications', 'findAllNotifications');
+    Route::post('{userId}/notifications/{notificationId}/mark', 'markAsReadNotification');
 });
 
 Route::controller(AuthController::class)->prefix('auth')->group(function () {

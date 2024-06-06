@@ -55,4 +55,9 @@ class UserService implements UserServiceContract
     {
         return $this->userRepo->findAllUnreadNotificationsByUserId($userId);
     }
+
+    public function markNotificationAsRead(int $userId, string $notificationId): void
+    {
+        $this->userRepo->markNotificationAsRead($userId, $notificationId);
+    }
 }
