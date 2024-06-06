@@ -28,4 +28,16 @@ class UserRepository implements UserRepositoryContract
     {
         return $this->findById($userId)->unreadNotifications;
     }
+
+    public function markNotificationAsRead(int $userId, string $notificationId): void
+    {
+        $user = $this->findById($userId);
+
+        foreach ($user->unreadNotifications as $notification) {
+            if ($notification->id === $notificationId) {
+                $notification->markAsRead();
+                break;
+            }
+        }
+    }
 }

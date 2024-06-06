@@ -15,4 +15,5 @@ interface VirtualMediaServiceContract
      */
     public function findAllByProjectId(int $projectId): Collection;
     public function sync(SyncVirtualMediaDto $dto): Collection;
+    public function markNotificationAsRead(string $notificationId): void;
 }
