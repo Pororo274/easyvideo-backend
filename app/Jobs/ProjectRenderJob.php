@@ -16,6 +16,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 
 class ProjectRenderJob implements ShouldQueue
 {
@@ -43,7 +44,8 @@ class ProjectRenderJob implements ShouldQueue
             $graph->addVirtualMedia($dto);
         }
 
-        $output = "outputs/output.mp4";
+
+        $output = "outputs/easyvideo_" . Str::random(10) . ".mp4";
         $graph
             ->buildGraphPlan()
             ->execute($output);
