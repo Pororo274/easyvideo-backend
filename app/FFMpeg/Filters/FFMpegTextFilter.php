@@ -18,9 +18,9 @@ class FFMpegTextFilter extends FFMpegFilter implements VideoFilter
 
     public function toString(): string
     {
-        $path = "C\\\\:/Windows/fonts/consola.ttf";
+        $path = "C\\\\:/Windows/fonts/arial.ttf";
 
-        return "drawtext=fontfile=".$path . ":text='" . $this->text . "':fontsize=" . $this->fontSize . ":fontcolor=white";
+        return "drawtext=fontfile=" . $path . ":text='" . $this->text . "':fontsize=" . $this->fontSize . ":fontcolor=white";
     }
 
     public function toArray(): array
