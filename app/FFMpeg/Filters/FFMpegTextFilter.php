@@ -18,7 +18,7 @@ class FFMpegTextFilter extends FFMpegFilter implements VideoFilter
 
     public function toString(): string
     {
-        $path = "C\\\\:/Windows/fonts/arial.ttf";
+        $path = config('app.font_src');
 
         return "drawtext=fontfile=" . $path . ":text='" . $this->text . "':fontsize=" . $this->fontSize . ":fontcolor=white";
     }
