@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Enums\Media\MediaTypeEnum;
 
 /**
  *
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Storage;
  * @property int $project_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property MediaTypeEnum $type
  * @method static \Illuminate\Database\Eloquent\Builder|Media newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Media newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Media query()
@@ -42,7 +44,11 @@ class Media extends Model implements ProjectUpdatedContract
     use HasFactory;
 
     protected $fillable = [
-        'path', 'project_id', 'original_name', 'is_uploaded', 'uuid'
+        'path', 'project_id', 'original_name', 'is_uploaded', 'uuid', 'type'
+    ];
+
+    protected $casts = [
+        'type' => MediaTypeEnum::class
     ];
 
     public function toDto(): MediaDto

@@ -3,9 +3,12 @@
 namespace App\Jobs;
 
 use App\Contracts\Repositories\UserRepositoryContract;
+use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\VirtualMediaServiceContract;
+use App\Dto\Media\CreateMediaDto;
 use App\Dto\Projects\ExportJobEndedDto;
 use App\Dto\Projects\ProjectRenderJobDto;
+use App\Enums\Media\MediaTypeEnum;
 use App\FFMpeg\Graph\FFMpegGraph;
 use App\Helpers\FFMpegHelper;
 use App\Notifications\ExportJobEndedNotification;
@@ -17,6 +20,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use Symfony\Component\Uid\Uuid;
 
 class ProjectRenderJob implements ShouldQueue
 {
@@ -34,7 +38,7 @@ class ProjectRenderJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(VirtualMediaServiceContract $virtualMediaService, UserRepositoryContract $userRepo): void
+    public function handle(VirtualMediaServiceContract $virtualMediaService, UserRepositoryContract $userRepo, MediaServiceContract $mediaService): void
     {
         $virtualMedias = $virtualMediaService->findAllByProjectId($this->dto->projectId)->all();
 
@@ -49,6 +53,15 @@ class ProjectRenderJob implements ShouldQueue
         $graph
             ->buildGraphPlan()
             ->execute($output);
+
+        $mediaService->store(new CreateMediaDto(
+            path: $output,
+            projectId: $this->dto->projectId,
+            isUploaded: true,
+            mediaUuid: Uuid::v4(),
+            originalName: '',
+            type: MediaTypeEnum::EXPORT
+        ));
         $user = $userRepo->findById($this->dto->userId);
 
         $user->notify(new ExportJobEndedNotification(

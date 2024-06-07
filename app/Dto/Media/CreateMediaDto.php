@@ -2,6 +2,7 @@
 
 namespace App\Dto\Media;
 
+use App\Enums\Media\MediaTypeEnum;
 
 readonly class CreateMediaDto
 {
@@ -10,7 +11,8 @@ readonly class CreateMediaDto
         public int $projectId,
         public bool $isUploaded,
         public string $mediaUuid,
-        public string $originalName
+        public string $originalName,
+        public MediaTypeEnum $type
     ) {
     }
 }

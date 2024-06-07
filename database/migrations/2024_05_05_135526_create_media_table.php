@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('path');
+            $table->string('type');
             $table->boolean('is_uploaded')->default(false);
             $table->foreignId('project_id')->constrained();
             $table->string('original_name');

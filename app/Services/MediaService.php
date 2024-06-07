@@ -7,8 +7,10 @@ use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Contracts\Services\MediaServiceContract;
 use App\Dto\Media\CreateMediaDto;
+use App\Dto\Media\MediaDto;
 use App\Dto\Media\SaveChunkDto;
 use App\Dto\Projects\UpdateProjectPreviewDto;
+use App\Enums\Media\MediaTypeEnum;
 use App\Helpers\FFMpegHelper;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,7 +44,8 @@ class MediaService implements MediaServiceContract
                     projectId: $dto->projectId,
                     isUploaded: $dto->last,
                     mediaUuid: $dto->mediaUuid,
-                    originalName: $dto->originalName
+                    originalName: $dto->originalName,
+                    type: MediaTypeEnum::ASSET
                 ));
             }
 
@@ -75,5 +78,10 @@ class MediaService implements MediaServiceContract
     public function findOneByUuid(string $uuid): Media
     {
         return $this->mediaRepo->findByUuid($uuid);
+    }
+
+    public function store(CreateMediaDto $dto): MediaDto
+    {
+        return $this->mediaRepo->store($dto)->toDto();
     }
 }

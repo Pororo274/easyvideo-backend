@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Dto\Media\CreateMediaDto;
+use App\Enums\Media\MediaTypeEnum;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -15,7 +16,8 @@ class MediaRepository implements MediaRepositoryContract
             'path' => $dto->path,
             'project_id' => $dto->projectId,
             'uuid' => $dto->mediaUuid,
-            'original_name' => $dto->originalName
+            'original_name' => $dto->originalName,
+            'type' => $dto->type
         ]);
     }
 
@@ -36,5 +38,13 @@ class MediaRepository implements MediaRepositoryContract
     public function findAllByProjectId(int $projectId): Collection
     {
         return Media::query()->where('project_id', $projectId)->get();
+    }
+
+    public function findByTypeAndProjectId(int $projectId, MediaTypeEnum $type): Collection
+    {
+        return Media::query()->where([
+            'project_id' => $projectId,
+            'type' => $type
+        ])->all();
     }
 }

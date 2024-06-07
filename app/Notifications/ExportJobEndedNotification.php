@@ -39,18 +39,14 @@ class ExportJobEndedNotification extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            'user_id' => $this->dto->userId,
-            'link' => $this->dto->link,
-            'project_id' => $this->dto->projectId
+            'data' => $this->dto,
         ];
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
-            'user_id' => $this->dto->userId,
-            'link' => $this->dto->link,
-            'project_id' => $this->dto->projectId
+            'data' => $this->dto,
         ]);
     }
 }
