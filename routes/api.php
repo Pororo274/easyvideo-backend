@@ -24,6 +24,7 @@ Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(f
         Route::get('/download/{filename}', 'downloadOutputFile');
         Route::post('{projectId}/render', 'render');
         Route::get('{projectId}', 'findById');
+        Route::delete('{projectId}', 'deleteById');
     });
 });
 

@@ -11,6 +11,7 @@ use App\FFMpeg\Dto\ExporterDto;
 use App\Models\Media;
 use App\Models\Project;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectService implements ProjectServiceContract
 {
@@ -35,5 +36,16 @@ class ProjectService implements ProjectServiceContract
     public function findById(int $projectId): ProjectDto
     {
         return $this->projectRepo->findById($projectId)->toDto();
+    }
+
+    public function deleteById(int $projectId): ProjectDto
+    {
+        $medias = $this->mediaRepo->findAllByProjectId($projectId);
+
+        $medias->each(function (Media $media) {
+            Storage::delete($media->path);
+        });
+
+        return $this->projectRepo->deleteById($projectId)->toDto();
     }
 }

@@ -13,4 +13,5 @@ interface ProjectRepositoryContract
     public function getAllByUserId(int $userId): Collection;
     public function findById(int $projectId): Project;
     public function updatePreview(UpdateProjectPreviewDto $dto): Project;
+    public function deleteById(int $projectId): Project;
 }

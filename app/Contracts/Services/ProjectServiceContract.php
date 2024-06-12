@@ -23,4 +23,5 @@ interface ProjectServiceContract
      * @return ProjectDto
      */
     public function findById(int $projectId): ProjectDto;
+    public function deleteById(int $projectId): ProjectDto;
 }

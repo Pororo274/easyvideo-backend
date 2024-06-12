@@ -39,4 +39,11 @@ class ProjectRepository implements ProjectRepositoryContract
 
         return $this->findById($dto->projectId);
     }
+
+    public function deleteById(int $projectId): Project
+    {
+        $project = $this->findById($projectId);
+        $project->delete();
+        return $project;
+    }
 }

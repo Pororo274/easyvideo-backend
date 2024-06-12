@@ -74,4 +74,11 @@ class ProjectController extends Controller
     {
         return response()->download(Storage::path("outputs/{$filename}"), $filename);
     }
+
+    public function deleteById(int $projectId, ProjectServiceContract $projectService): JsonResponse
+    {
+        $project = $projectService->deleteById($projectId);
+
+        return response()->json($project);
+    }
 }
