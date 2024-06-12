@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('content_type');
             $table->string('content');
             $table->integer('layer');
-            $table->foreignId('project_id');
+            $table->foreignId('project_id')->constrained()->onDelete('CASCADE');
             $table->jsonb('filters');
             $table->timestamps();
         });

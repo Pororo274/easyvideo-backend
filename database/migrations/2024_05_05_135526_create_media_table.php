@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('path');
             $table->string('type');
             $table->boolean('is_uploaded')->default(false);
-            $table->foreignId('project_id')->constrained();
+            $table->foreignId('project_id')->constrained()->onDelete('CASCADE');
             $table->string('original_name');
             $table->timestamps();
         });
