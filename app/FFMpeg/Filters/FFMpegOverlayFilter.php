@@ -11,14 +11,20 @@ class FFMpegOverlayFilter extends FFMpegFilter implements VideoFilter, HasMultip
 {
     public function __construct(
         protected Position $position,
-        protected Time $time
+        protected ?Time $time = null
     ) {
         $this->name = 'OverlayFilter';
     }
 
     public function toString(): string
     {
-        return "overlay=" . $this->position->x . ":" . $this->position->y . ":enable='between(t," . $this->time->delay . ',' . ($this->time->delay + $this->time->duration) . ")'";
+        $command = "overlay=" . $this->position->x . ":" . $this->position->y;
+
+        if (!is_null($this->time)) {
+            $command .= ":enable='between(t," . $this->time->delay . ',' . ($this->time->delay + $this->time->duration) . ")'";
+        }
+
+        return  $command;
     }
 
     public function toArray(): array

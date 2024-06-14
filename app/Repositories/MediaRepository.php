@@ -17,7 +17,8 @@ class MediaRepository implements MediaRepositoryContract
             'project_id' => $dto->projectId,
             'uuid' => $dto->mediaUuid,
             'original_name' => $dto->originalName,
-            'type' => $dto->type
+            'type' => $dto->type,
+            'is_uploaded' => $dto->isUploaded
         ]);
     }
 
@@ -37,7 +38,7 @@ class MediaRepository implements MediaRepositoryContract
 
     public function findAllByProjectId(int $projectId): Collection
     {
-        return Media::query()->where('project_id', $projectId)->get();
+        return Media::query()->where('project_id', $projectId)->where('type', MediaTypeEnum::ASSET)->get();
     }
 
     public function findByTypeAndProjectId(int $projectId, MediaTypeEnum $type): Collection

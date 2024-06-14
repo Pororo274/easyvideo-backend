@@ -8,7 +8,13 @@ use App\Contracts\Services\VirtualMediaServiceContract;
 use App\Dto\Media\CreateMediaDto;
 use App\Dto\Projects\ExportJobEndedDto;
 use App\Dto\Projects\ProjectRenderJobDto;
+use App\Dto\VirtualMedia\VirtualImageDto;
+use App\Dto\VirtualMedia\WatermarkDto;
 use App\Enums\Media\MediaTypeEnum;
+use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
+use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Time;
+use App\FFMpeg\Filters\FFMpegOverlayFilter;
 use App\FFMpeg\Graph\FFMpegGraph;
 use App\Helpers\FFMpegHelper;
 use App\Notifications\ExportJobEndedNotification;
@@ -20,6 +26,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Symfony\Component\Uid\Uuid;
 
 class ProjectRenderJob implements ShouldQueue
@@ -48,6 +56,23 @@ class ProjectRenderJob implements ShouldQueue
             $graph->addVirtualMedia($dto);
         }
 
+        $graph->addVirtualMedia(new WatermarkDto(
+            uuid: 'watermark',
+            projectId: $this->dto->projectId,
+            layer: -1,
+            contentType: VirtualMediaTypeEnum::Image,
+            content: "helpers/watermark.png",
+            filters: [
+                'position' => [
+                    'x' => $this->dto->width - 76,
+                    'y' => $this->dto->height - 76
+                ],
+                'size' => [
+                    'width' => 64,
+                    'height' => 64
+                ]
+            ]
+        ));
 
         $output = "outputs/easyvideo_" . Str::random(10) . ".mp4";
         $graph
