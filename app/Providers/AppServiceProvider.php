@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Contracts\Repositories\ProjectRepositoryContract;
+use App\Contracts\Repositories\SubscriptionRepositoryContract;
 use App\Contracts\Repositories\UserRepositoryContract;
 use App\Contracts\Repositories\VirtualMediaRepositoryContract;
 use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\ProjectServiceContract;
+use App\Contracts\Services\SubscriptionServiceContract;
 use App\Contracts\Services\UserServiceContract;
 use App\Contracts\Services\VirtualMediaServiceContract;
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
@@ -19,10 +21,12 @@ use App\FFMpeg\Factories\Filters\FFMpegTrimFilterFactory;
 use App\FFMpeg\Filters\FFMpegOverlayFilter;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProjectRepository;
+use App\Repositories\SubscriptionRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VirtualMediaRepository;
 use App\Services\MediaService;
 use App\Services\ProjectService;
+use App\Services\SubscriptionService;
 use App\Services\UserService;
 use App\Services\VirtualMediaService;
 use Illuminate\Support\Facades\Http;
@@ -58,6 +62,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(VirtualMediaRepositoryContract::class, VirtualMediaRepository::class);
         $this->app->bind(VirtualMediaServiceContract::class, VirtualMediaService::class);
+
+        $this->app->bind(SubscriptionRepositoryContract::class, SubscriptionRepository::class);
+        $this->app->bind(SubscriptionServiceContract::class, SubscriptionService::class);
     }
 
     /**

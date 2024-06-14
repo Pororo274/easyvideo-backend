@@ -12,4 +12,9 @@ class Subscription extends Model
     protected $fillable = [
         'user_id', 'cost', 'work_until', 'accepted_at'
     ];
+
+    protected $casts = [
+        'work_until' => 'datetime',
+        'accepted_at' => 'datetime'
+    ];
 }

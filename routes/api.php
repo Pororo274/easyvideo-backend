@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\VirtualMediaController;
@@ -60,4 +61,8 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', 'logout');
     });
+});
+
+Route::controller(SubscriptionController::class)->prefix('subscriptions')->group(function () {
+    Route::post('month', 'createMonthSubscription');
 });
