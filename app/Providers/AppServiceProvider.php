@@ -25,6 +25,7 @@ use App\Services\MediaService;
 use App\Services\ProjectService;
 use App\Services\UserService;
 use App\Services\VirtualMediaService;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -68,5 +69,10 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
             URL::forceRootUrl(config('app.url'));
         }
+
+        Http::macro('yookassa', function () {
+            return Http::withBasicAuth(config('app.yookassa_shop_id'), config('app.yookassa_secret_key'))
+                ->baseUrl('https://api.yookassa.ru/v3');
+        });
     }
 }
