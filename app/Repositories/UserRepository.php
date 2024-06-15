@@ -15,7 +15,8 @@ class UserRepository implements UserRepositoryContract
         return User::query()->create([
             'username' => $dto->username,
             'password' => $dto->password,
-            'email' => $dto->email
+            'email' => $dto->email,
+            'roles' => $dto->roles
         ]);
     }
 
