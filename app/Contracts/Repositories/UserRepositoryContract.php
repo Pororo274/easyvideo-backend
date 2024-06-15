@@ -12,4 +12,5 @@ interface UserRepositoryContract
     public function findById(int $userId): User;
     public function findAllUnreadNotificationsByUserId(int $userId): Collection;
     public function markNotificationAsRead(int $userId, string $notificationId): void;
+    public function getTotalUsersCount(): int;
 }

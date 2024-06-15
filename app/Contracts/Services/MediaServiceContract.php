@@ -14,4 +14,5 @@ interface MediaServiceContract
     public function findAllByProjectId(int $projectId): Collection;
     public function findOneByUuid(string $uuid): Media;
     public function store(CreateMediaDto $dto): MediaDto;
+    public function getTotalSize(): float;
 }

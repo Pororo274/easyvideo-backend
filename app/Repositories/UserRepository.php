@@ -41,4 +41,9 @@ class UserRepository implements UserRepositoryContract
             }
         }
     }
+
+    public function getTotalUsersCount(): int
+    {
+        return User::query()->count();
+    }
 }

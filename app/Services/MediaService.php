@@ -84,4 +84,14 @@ class MediaService implements MediaServiceContract
     {
         return $this->mediaRepo->store($dto)->toDto();
     }
+
+    public function getTotalSize(): float
+    {
+        $mediaFiles = Storage::files("media");
+        $outputFiles = Storage::files("outputs");
+
+        return collect([...$mediaFiles, ...$outputFiles])->reduce(function (float $carry, string $file) {
+            return $carry + Storage::size($file);
+        }, 0);
+    }
 }

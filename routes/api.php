@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProjectController;
@@ -65,4 +66,8 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
 
 Route::controller(SubscriptionController::class)->prefix('subscriptions')->group(function () {
     Route::post('month', 'createMonthSubscription');
+});
+
+Route::controller(AdminController::class)->prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('brief', 'getBrief');
 });

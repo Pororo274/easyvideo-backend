@@ -6,6 +6,7 @@ use App\Contracts\Repositories\UserRepositoryContract;
 use App\Contracts\Services\UserServiceContract;
 use App\Dto\Auth\LoginUserDto;
 use App\Dto\User\CreateUserDto;
+use App\Dto\User\UsersBriefDto;
 use App\Exceptions\LoginInvalidCredentialsException;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -59,5 +60,14 @@ class UserService implements UserServiceContract
     public function markNotificationAsRead(int $userId, string $notificationId): void
     {
         $this->userRepo->markNotificationAsRead($userId, $notificationId);
+    }
+
+    public function getUsersBrief(): UsersBriefDto
+    {
+        return new UsersBriefDto(
+            total: $this->userRepo->getTotalUsersCount(),
+            totalWithSubscription: 0,
+            totalBanned: 0
+        );
     }
 }
