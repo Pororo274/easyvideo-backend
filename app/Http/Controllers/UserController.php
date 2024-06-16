@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Services\UserServiceContract;
+use App\Dto\User\UserBriefDto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -22,5 +23,10 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+
+    public function getBriefByUserId(int $userId, UserServiceContract $userService): JsonResponse
+    {
+        return response()->json($userService->getUserBriefByUserId($userId));
     }
 }
