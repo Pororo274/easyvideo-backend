@@ -30,6 +30,17 @@ class VirtualMediaService implements VirtualMediaServiceContract
 
     public function sync(SyncVirtualMediaDto $dto): Collection
     {
+        $virtualMedias = $this->virtualMediaRepo->findAllByProjectId($dto->projectId);
+        $vmUuids = collect($dto->virtualMedias)->map(function (array $vm) {
+            return $vm['uuid'];
+        });
+
+        $virtualMedias->each(function (VirtualMedia $vm) use ($vmUuids) {
+            if (!$vmUuids->contains($vm->uuid)) {
+                $this->virtualMediaRepo->deleteByUuid($vm->uuid);
+            }
+        });
+
         return collect($dto->virtualMedias)->map(function ($virtualMedia) use ($dto) {
             try {
                 $this->virtualMediaRepo->findByUuid($virtualMedia['uuid']);
