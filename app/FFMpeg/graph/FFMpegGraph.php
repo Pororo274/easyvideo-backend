@@ -141,9 +141,6 @@ class FFMpegGraph
             filterchains: [...$inputFilterchains, ...$filterchains]
         );
 
-
-
-
         return $this;
     }
 

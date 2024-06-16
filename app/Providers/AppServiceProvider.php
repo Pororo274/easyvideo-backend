@@ -14,11 +14,11 @@ use App\Contracts\Services\UserServiceContract;
 use App\Contracts\Services\VirtualMediaServiceContract;
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
 use App\FFMpeg\Factories\Filters\FFMpegATrimFilterFactory;
+use App\FFMpeg\Factories\Filters\FFMpegFlipFilterFactory;
 use App\FFMpeg\Factories\Filters\FFMpegOverlayFilterFactory;
 use App\FFMpeg\Factories\Filters\FFMpegScaleFilterFactory;
 use App\FFMpeg\Factories\Filters\FFMpegTextFilterFactory;
 use App\FFMpeg\Factories\Filters\FFMpegTrimFilterFactory;
-use App\FFMpeg\Filters\FFMpegOverlayFilter;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\SubscriptionRepository;
@@ -41,12 +41,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $videoStreamFilterFactories = [FFMpegTrimFilterFactory::class];
-        $videoFilterFactories = [FFMpegOverlayFilterFactory::class, FFMpegScaleFilterFactory::class,];
+        $videoFilterFactories = [FFMpegOverlayFilterFactory::class, FFMpegScaleFilterFactory::class];
         $textFilterFactories = [FFMpegOverlayFilterFactory::class, FFMpegTextFilterFactory::class];
         $audioFilterFactories = [FFMpegATrimFilterFactory::class];
 
 
-        $this->app->tag([...$videoFilterFactories, ...$audioFilterFactories, ...$videoStreamFilterFactories], 'videoFilterFactories');
+        $this->app->tag([...$videoFilterFactories, ...$audioFilterFactories, ...$videoStreamFilterFactories, FFMpegFlipFilterFactory::class], 'videoFilterFactories');
         $this->app->tag([...$audioFilterFactories], 'audioFilterFactories');
         $this->app->tag([...$videoFilterFactories], VirtualMediaTypeEnum::Image->getTag());
         $this->app->tag([...$textFilterFactories], VirtualMediaTypeEnum::Text->getTag());

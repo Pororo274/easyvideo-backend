@@ -70,7 +70,7 @@ class ProjectRenderJob implements ShouldQueue
                 'size' => [
                     'width' => 64,
                     'height' => 64
-                ]
+                ],
             ]
         ));
 
