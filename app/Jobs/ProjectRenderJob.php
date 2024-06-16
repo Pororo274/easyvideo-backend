@@ -34,6 +34,8 @@ class ProjectRenderJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public int $timeout = 120;
+
     /**
      * Create a new job instance.
      */
