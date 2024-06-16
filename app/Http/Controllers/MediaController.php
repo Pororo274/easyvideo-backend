@@ -27,11 +27,7 @@ class MediaController extends Controller
 
     public function findAllByProjectId(int $projectId, MediaServiceContract $mediaService)
     {
-        $medias = $mediaService->findAllByProjectId($projectId);
-
-        return $medias->map(function (Media $media) {
-            return $media->toDto();
-        });
+        return $mediaService->findAllByProjectId($projectId);
     }
 
     public function getMedia(string $mediaName): BinaryFileResponse

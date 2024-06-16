@@ -11,7 +11,8 @@ readonly class MediaDto
         public string $originalName,
         public string $type,
         public MediaStatusEnum $status,
-        public string $objectURL
+        public string $objectURL,
+        public int $uploadedBytes
     ) {
     }
 }

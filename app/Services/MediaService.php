@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Console\Commands\CreateMedia;
 use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Contracts\Services\MediaServiceContract;
@@ -13,12 +12,11 @@ use App\Dto\Projects\UpdateProjectPreviewDto;
 use App\Enums\Media\MediaTypeEnum;
 use App\Helpers\FFMpegHelper;
 use App\Models\Media;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Illuminate\Support\Str;
 
 class MediaService implements MediaServiceContract
@@ -72,12 +70,14 @@ class MediaService implements MediaServiceContract
 
     public function findAllByProjectId(int $projectId): Collection
     {
-        return $this->mediaRepo->findAllByProjectId($projectId);
+        return $this->mediaRepo->findAllByProjectId($projectId)->map(function (Media $media) {
+            return $media->toDto();
+        });
     }
 
-    public function findOneByUuid(string $uuid): Media
+    public function findOneByUuid(string $uuid): MediaDto
     {
-        return $this->mediaRepo->findByUuid($uuid);
+        return $this->mediaRepo->findByUuid($uuid)->toDto();
     }
 
     public function store(CreateMediaDto $dto): MediaDto

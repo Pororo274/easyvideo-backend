@@ -24,6 +24,8 @@ class VirtualMediaService implements VirtualMediaServiceContract
     {
         return $this->virtualMediaRepo->findAllByProjectId($projectId)
             ->map(function (VirtualMedia $vm) {
+
+
                 return $vm->toDto();
             });
     }

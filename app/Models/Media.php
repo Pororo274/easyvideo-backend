@@ -58,7 +58,8 @@ class Media extends Model implements ProjectUpdatedContract
             originalName: $this->original_name,
             type: Storage::mimeType($this->path),
             status: MediaStatusEnum::fromBool($this->is_uploaded),
-            objectURL: url('/api/' . $this->path)
+            objectURL: url('/api/' . $this->path),
+            uploadedBytes: Storage::size($this->path)
         );
     }
 
