@@ -16,12 +16,30 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
 /**
+ * 
+ *
  * @property VirtualMediaTypeEnum $content_type
  * @property string $content
  * @property int $layer
  * @property string $uuid
  * @property array $filters
  * @property int $project_id
+ * @property int $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia query()
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereContentType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereFilters($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereLayer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VirtualMedia whereUuid($value)
+ * @mixin \Eloquent
  */
 #[ObservedBy([ProjectUpdateObserver::class])]
 class VirtualMedia extends Model implements ProjectUpdatedContract

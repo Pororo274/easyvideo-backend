@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Enums\Media\MediaTypeEnum;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $path
@@ -36,6 +36,7 @@ use App\Enums\Media\MediaTypeEnum;
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereIsUploaded($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereOriginalName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereType($value)
  * @mixin \Eloquent
  */
 #[ObservedBy([ProjectUpdateObserver::class])]

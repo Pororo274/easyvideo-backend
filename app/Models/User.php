@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\User\UserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $name
@@ -36,6 +38,9 @@ use Illuminate\Notifications\Notifiable;
  * @property string|null $avatar
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @property array $roles
+ * @property UserStatusEnum $status
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRoles($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -75,7 +80,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'roles' => 'array'
+            'roles' => 'array',
+            'status' => UserStatusEnum::class
         ];
     }
 
