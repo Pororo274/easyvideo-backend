@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\UserRepositoryContract;
 use App\Dto\User\CreateUserDto;
+use App\Enums\User\UserStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -50,5 +51,14 @@ class UserRepository implements UserRepositoryContract
     public function all(): Collection
     {
         return User::query()->get();
+    }
+
+    public function banByUserId(int $userId): User
+    {
+        User::query()->where('id', $userId)->update([
+            'status' => UserStatusEnum::Banned
+        ]);
+
+        return $this->findById($userId);
     }
 }

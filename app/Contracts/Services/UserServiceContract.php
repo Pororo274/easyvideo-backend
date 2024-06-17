@@ -19,4 +19,5 @@ interface UserServiceContract
     public function getUsersBrief(): UsersBriefDto;
     public function getUserBriefByUserId(int $userId): UserBriefDto;
     public function all(): Collection;
+    public function banByUserId(int $userId): User;
 }

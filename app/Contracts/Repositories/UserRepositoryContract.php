@@ -14,4 +14,5 @@ interface UserRepositoryContract
     public function markNotificationAsRead(int $userId, string $notificationId): void;
     public function getTotalUsersCount(): int;
     public function all(): Collection;
+    public function banByUserId(int $userId): User;
 }

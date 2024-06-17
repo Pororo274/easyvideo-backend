@@ -72,4 +72,5 @@ Route::controller(SubscriptionController::class)->prefix('subscriptions')->group
 Route::controller(AdminController::class)->prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('brief', 'getBrief');
     Route::get('users', 'getAllUsers');
+    Route::patch('users/{userId}/ban', 'banByUserId');
 });

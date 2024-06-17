@@ -98,4 +98,9 @@ class UserService implements UserServiceContract
     {
         return $this->userRepo->all();
     }
+
+    public function banByUserId(int $userId): User
+    {
+        return $this->userRepo->banByUserId($userId);
+    }
 }
