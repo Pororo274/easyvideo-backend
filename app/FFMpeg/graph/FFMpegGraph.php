@@ -35,6 +35,7 @@ class FFMpegGraph
     protected FFMpegInput $blank;
     protected Maskable $lastVideoOutput;
     protected Maskable $lastAudioOutput;
+    protected Size $size;
 
     public function __construct()
     {
@@ -55,6 +56,12 @@ class FFMpegGraph
      * @return self
      */
 
+    public function addSize(Size $size): self
+    {
+        $this->size = $size;
+        return $this;
+    }
+
     public function buildGraphPlan(): self
     {
         $inputs = [];
@@ -62,10 +69,10 @@ class FFMpegGraph
         $sortedVirtualMedias = collect($this->virtualMedias)->sortByDesc('layer');
         $blankFilterchain = (new FFMpegFilterchain([$this->lastVideoOutput], [
             new FFMpegScaleFilter(
-                new Size(640, 360),
+                $this->size
             ),
             new FFMpegSetdarFilter(
-                new Size(640, 360),
+                $this->size
             )
         ]));
         $this->lastVideoOutput = new FFMpegVideoStream;

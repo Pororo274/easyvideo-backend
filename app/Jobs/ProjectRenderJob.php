@@ -13,6 +13,7 @@ use App\Dto\VirtualMedia\WatermarkDto;
 use App\Enums\Media\MediaTypeEnum;
 use App\Enums\VirtualMedia\VirtualMediaTypeEnum;
 use App\FFMpeg\Coordinate\Position;
+use App\FFMpeg\Coordinate\Size;
 use App\FFMpeg\Coordinate\Time;
 use App\FFMpeg\Filters\FFMpegOverlayFilter;
 use App\FFMpeg\Graph\FFMpegGraph;
@@ -78,6 +79,10 @@ class ProjectRenderJob implements ShouldQueue
 
         $output = "outputs/easyvideo_" . Str::random(10) . ".mp4";
         $graph
+            ->addSize(new Size(
+                width: $this->dto->width,
+                height: $this->dto->height
+            ))
             ->buildGraphPlan()
             ->execute($output);
 
