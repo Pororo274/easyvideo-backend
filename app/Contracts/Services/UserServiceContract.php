@@ -18,4 +18,5 @@ interface UserServiceContract
     public function markNotificationAsRead(int $userId,  string $notificationId): void;
     public function getUsersBrief(): UsersBriefDto;
     public function getUserBriefByUserId(int $userId): UserBriefDto;
+    public function all(): Collection;
 }

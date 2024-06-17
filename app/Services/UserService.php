@@ -84,13 +84,18 @@ class UserService implements UserServiceContract
         $usedSpace = $projects->reduce(function (int $carry, Project $project) {
             $medias = $this->mediaService->findAllByProjectId($project->id);
             return $carry + $medias->reduce(function (int $carry, MediaDto $media) {
-                    return $carry + $media->uploadedBytes;
-                }, 0);
+                return $carry + $media->uploadedBytes;
+            }, 0);
         }, 0);
 
         return new UserBriefDto(
             totalUsedSpaceInBytes: $usedSpace,
             totalAvailableSpaceInBytes: 1024 * 1024 * 1024
         );
+    }
+
+    public function all(): Collection
+    {
+        return $this->userRepo->all();
     }
 }

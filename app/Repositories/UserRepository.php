@@ -46,4 +46,9 @@ class UserRepository implements UserRepositoryContract
     {
         return User::query()->count();
     }
+
+    public function all(): Collection
+    {
+        return User::query()->get();
+    }
 }
