@@ -45,6 +45,7 @@ class ProjectService implements ProjectServiceContract
         $medias->each(function (Media $media) {
             Storage::delete($media->path);
         });
+        $this->mediaRepo->deleteAllByProjectId($projectId);
 
         return $this->projectRepo->deleteById($projectId)->toDto();
     }

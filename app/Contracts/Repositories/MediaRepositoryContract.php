@@ -14,4 +14,5 @@ interface MediaRepositoryContract
     public function findAllByProjectId(int $projectId): Collection;
     public function updateUploadStatusByUuid(string $uuid, bool $isUploaded): Media;
     public function findByTypeAndProjectId(int $projectId, MediaTypeEnum $type): Collection;
+    public function deleteAllByProjectId(int $projectId): void;
 }

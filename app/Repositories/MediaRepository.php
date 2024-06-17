@@ -48,4 +48,9 @@ class MediaRepository implements MediaRepositoryContract
             'type' => $type
         ])->all();
     }
+
+    public function deleteAllByProjectId(int $projectId): void
+    {
+        Media::query()->where('project_id', $projectId)->delete();
+    }
 }
