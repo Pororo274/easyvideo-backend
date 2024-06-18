@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\Observers\ProjectUpdatedContract;
 use App\Dto\Media\MediaDto;
 use App\Enums\Media\MediaStatusEnum;
+use App\Helpers\MediaHelper;
 use App\Observers\ProjectUpdateObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Enums\Media\MediaTypeEnum;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $path
@@ -59,7 +60,7 @@ class Media extends Model implements ProjectUpdatedContract
             originalName: $this->original_name,
             type: Storage::mimeType($this->path),
             status: MediaStatusEnum::fromBool($this->is_uploaded),
-            objectURL: url('/api/' . $this->path),
+            objectURL: MediaHelper::getMediaUrl($this->path),
             uploadedBytes: Storage::size($this->path)
         );
     }

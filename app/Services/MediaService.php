@@ -5,14 +5,17 @@ namespace App\Services;
 use App\Contracts\Repositories\MediaRepositoryContract;
 use App\Contracts\Repositories\ProjectRepositoryContract;
 use App\Contracts\Services\MediaServiceContract;
+use App\Dto\File\FileDto;
 use App\Dto\Media\CreateMediaDto;
 use App\Dto\Media\MediaDto;
 use App\Dto\Media\SaveChunkDto;
 use App\Dto\Projects\UpdateProjectPreviewDto;
 use App\Enums\Media\MediaTypeEnum;
 use App\Helpers\FFMpegHelper;
+use App\Helpers\MediaHelper;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -93,5 +96,19 @@ class MediaService implements MediaServiceContract
         return collect([...$mediaFiles, ...$outputFiles])->reduce(function (float $carry, string $file) {
             return $carry + Storage::size($file);
         }, 0);
+    }
+
+    public function getFilesByDirectory(string $directory): Collection
+    {
+        return collect(Storage::files($directory))->map(function (string $path) use ($directory) {
+            return new FileDto(
+                name: basename($path),
+                directory: $directory,
+                sizeInBytes: Storage::size($path),
+                modifiedDate: Carbon::createFromTimestamp(Storage::lastModified($path)),
+                mimeType: Storage::mimeType($path),
+                url: MediaHelper::getMediaUrl($path)
+            );
+        });
     }
 }

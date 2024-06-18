@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Dto\Subscription\SubscriptionDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -39,4 +40,13 @@ class Subscription extends Model
         'work_until' => 'datetime',
         'accepted_at' => 'datetime'
     ];
+
+    public function toDto(): SubscriptionDto
+    {
+        return new SubscriptionDto(
+            id: $this->id,
+            userId: $this->user_id,
+            workUntil: $this->work_until
+        );
+    }
 }

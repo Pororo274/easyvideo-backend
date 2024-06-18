@@ -37,7 +37,7 @@ Route::controller(MediaController::class)->middleware('auth:sanctum')->group(fun
 
     Route::prefix('media')->withoutMiddleware('auth:sanctum')->group(function () {
         Route::post('chunk', 'storeChunk');
-        Route::get('{mediaName}', 'getMedia');
+        Route::get('file', 'getMedia');
     });
 });
 
@@ -65,12 +65,19 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
     });
 });
 
-Route::controller(SubscriptionController::class)->prefix('subscriptions')->group(function () {
-    Route::post('month', 'createMonthSubscription');
+Route::controller(SubscriptionController::class)->group(function () {
+    Route::prefix('users/{userId}/subscriptions')->group(function () {
+        Route::get('last', 'findLast');
+    });
+    Route::prefix('subscriptions')->group(function () {
+        Route::post('month', 'createMonthSubscription');
+        Route::post('webhook', 'yookassaWebhook');
+    });
 });
 
 Route::controller(AdminController::class)->prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('brief', 'getBrief');
     Route::get('users', 'getAllUsers');
     Route::patch('users/{userId}/ban', 'banByUserId');
+    Route::get('folders/{folder}', 'App\Http\Controllers\MediaController@getFilesByFolder');
 });

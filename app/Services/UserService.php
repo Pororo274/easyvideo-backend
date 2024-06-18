@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\Repositories\ProjectRepositoryContract;
+use App\Contracts\Repositories\SubscriptionRepositoryContract;
 use App\Contracts\Repositories\UserRepositoryContract;
 use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\UserServiceContract;
@@ -15,6 +16,7 @@ use App\Exceptions\LoginInvalidCredentialsException;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
 class UserService implements UserServiceContract
@@ -23,7 +25,8 @@ class UserService implements UserServiceContract
     public function __construct(
         protected UserRepositoryContract $userRepo,
         protected ProjectRepositoryContract $projectRepo,
-        protected MediaServiceContract $mediaService
+        protected MediaServiceContract $mediaService,
+        protected SubscriptionRepositoryContract $subscriptionRepo
     ) {
     }
 
@@ -88,9 +91,17 @@ class UserService implements UserServiceContract
             }, 0);
         }, 0);
 
+        $spaceAvailable = 1024 * 1024 * 1024;
+
+        try {
+            $this->subscriptionRepo->findLastActiveByUserId($userId);
+
+            $spaceAvailable += 3 * 1024 * 1024 * 1024;
+        } catch (ModelNotFoundException) {}
+
         return new UserBriefDto(
             totalUsedSpaceInBytes: $usedSpace,
-            totalAvailableSpaceInBytes: 1024 * 1024 * 1024
+            totalAvailableSpaceInBytes: $spaceAvailable
         );
     }
 

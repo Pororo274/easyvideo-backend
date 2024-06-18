@@ -6,6 +6,7 @@ use App\Contracts\Services\MediaServiceContract;
 use App\Dto\Media\SaveChunkDto;
 use App\Http\Requests\Media\StoreChunkRequest;
 use App\Models\Media;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -30,8 +31,15 @@ class MediaController extends Controller
         return $mediaService->findAllByProjectId($projectId);
     }
 
-    public function getMedia(string $mediaName): BinaryFileResponse
+    public function getMedia(Request $request): BinaryFileResponse
     {
-        return response()->file(Storage::path('media/' . $mediaName));
+        return response()->file(Storage::path($request->query('path')));
+    }
+
+    public function getFilesByFolder(string $folder, MediaServiceContract $mediaService): JsonResponse
+    {
+        $files = $mediaService->getFilesByDirectory($folder);
+
+        return response()->json($files);
     }
 }

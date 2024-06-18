@@ -15,4 +15,5 @@ interface MediaServiceContract
     public function findOneByUuid(string $uuid): MediaDto;
     public function store(CreateMediaDto $dto): MediaDto;
     public function getTotalSize(): float;
+    public function getFilesByDirectory(string $directory): Collection;
 }
