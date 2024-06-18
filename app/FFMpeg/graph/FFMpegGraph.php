@@ -51,11 +51,6 @@ class FFMpegGraph
     {
         $this->virtualMedias  = [...$this->virtualMedias, $vm];
     }
-
-    /**
-     * @return self
-     */
-
     public function addSize(Size $size): self
     {
         $this->size = $size;
