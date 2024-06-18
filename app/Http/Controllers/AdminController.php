@@ -24,7 +24,7 @@ class AdminController extends Controller
         return response()->json([
             'disk' => [
                 'usedSpace' => $usedDiskSpace,
-                'totalAvailableSpace' => 104_857_600
+                'totalAvailableSpace' => config('app.storage_space') * 1024 * 1024 * 1024
             ],
             'users' => $userService->getUsersBrief()
         ]);

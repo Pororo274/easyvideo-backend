@@ -127,4 +127,5 @@ return [
     'font_src' => env('FONT_SRC', ''),
     'yookassa_shop_id' => env('YOOKASSA_SHOP_ID', ''),
     'yookassa_secret_key' => env('YOOKASSA_SECRET_KEY', ''),
+    'storage_space' => env('STORAGE_SPACE', '20')
 ];
