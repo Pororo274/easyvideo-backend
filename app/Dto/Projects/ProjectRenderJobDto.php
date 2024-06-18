@@ -17,6 +17,7 @@ readonly class ProjectRenderJobDto
         public int $projectId,
         public int $width,
         public int $height,
+        public bool $subscription
     ) {
     }
 }

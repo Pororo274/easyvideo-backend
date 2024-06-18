@@ -59,23 +59,25 @@ class ProjectRenderJob implements ShouldQueue
             $graph->addVirtualMedia($dto);
         }
 
-        $graph->addVirtualMedia(new WatermarkDto(
-            uuid: 'watermark',
-            projectId: $this->dto->projectId,
-            layer: -1,
-            contentType: VirtualMediaTypeEnum::Image,
-            content: "helpers/watermark.png",
-            filters: [
-                'position' => [
-                    'x' => $this->dto->width - 76,
-                    'y' => $this->dto->height - 76
-                ],
-                'size' => [
-                    'width' => 64,
-                    'height' => 64
-                ],
-            ]
-        ));
+        if (!$this->dto->subscription) {
+            $graph->addVirtualMedia(new WatermarkDto(
+                uuid: 'watermark',
+                projectId: $this->dto->projectId,
+                layer: -1,
+                contentType: VirtualMediaTypeEnum::Image,
+                content: "helpers/watermark.png",
+                filters: [
+                    'position' => [
+                        'x' => $this->dto->width - 76,
+                        'y' => $this->dto->height - 76
+                    ],
+                    'size' => [
+                        'width' => 64,
+                        'height' => 64
+                    ],
+                ]
+            ));
+        }
 
         $output = "outputs/easyvideo_" . Str::random(10) . ".mp4";
         $graph

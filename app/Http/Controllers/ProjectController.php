@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Services\MediaServiceContract;
 use App\Contracts\Services\ProjectServiceContract;
+use App\Contracts\Services\SubscriptionServiceContract;
 use App\Contracts\Services\VirtualMediaServiceContract;
 use App\Dto\Projects\CreateProjectDto;
 use App\Dto\Projects\ProjectRenderJobDto;
@@ -13,6 +14,7 @@ use App\Enums\Projects\ProjectConfigEnum;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Http\Requests\Project\RenderRequest;
 use App\Jobs\ProjectRenderJob;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,15 +42,23 @@ class ProjectController extends Controller
         return response()->json(ProjectConfigEnum::getConfigs());
     }
 
-    public function render(int $projectId, ProjectServiceContract $projectService)
+    public function render(int $projectId, ProjectServiceContract $projectService, SubscriptionServiceContract $subscriptionService)
     {
         $project = $projectService->findById($projectId);
+
+        try {
+            $subscriptionService->findLastActiveByUserId($project->userId);
+            $subscription = true;
+        } catch (ModelNotFoundException) {
+            $subscription = false;
+        }
 
         ProjectRenderJob::dispatch(new ProjectRenderJobDto(
             userId: Auth::id(),
             projectId: $projectId,
             width: $project->width,
             height: $project->height,
+            subscription: $subscription
         ));
 
         return response()->json([
