@@ -24,6 +24,10 @@ class FFMpegFlipFilter extends FFMpegFilter implements VideoFilter
 
     public function toString(): string
     {
+        if (!$this->h && !$this->v) {
+            return 'null';
+        }
+
         $command = '';
 
         if ($this->h) {
