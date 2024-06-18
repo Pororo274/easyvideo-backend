@@ -16,7 +16,7 @@ use App\FFMpeg\Coordinate\Position;
 use App\FFMpeg\Coordinate\Size;
 use App\FFMpeg\Coordinate\Time;
 use App\FFMpeg\Filters\FFMpegOverlayFilter;
-use App\FFMpeg\Graph\FFMpegGraph;
+use App\FFMpeg\graph\FFMpegGraph;
 use App\Helpers\FFMpegHelper;
 use App\Notifications\ExportJobEndedNotification;
 use Illuminate\Bus\Queueable;
