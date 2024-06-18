@@ -1,6 +1,6 @@
 <?php
 
-namespace App\FFMpeg\graph;
+namespace App\FFMpeg\Graph;
 
 use App\Dto\VirtualMedia\VirtualMediaDto;
 use App\FFMpeg\Contracts\Maskable;
@@ -14,7 +14,7 @@ use App\FFMpeg\Filters\FFMpegOverlayFilter;
 use App\FFMpeg\Filters\FFMpegScaleFilter;
 use App\FFMpeg\Filters\FFMpegSetdarFilter;
 use App\FFMpeg\Filters\FFMpegSplitFilter;
-use App\FFMpeg\graph\FFMpegGraphPlan;
+use App\FFMpeg\Graph\FFMpegGraphPlan;
 use App\FFMpeg\Media\Inputs\FFMpegInput;
 use App\FFMpeg\Media\Inputs\FFMpegMask;
 use App\FFMpeg\Media\Streams\FFMpegAudioStream;

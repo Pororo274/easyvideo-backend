@@ -1,6 +1,6 @@
 <?php
 
-namespace App\FFMpeg\graph;
+namespace App\FFMpeg\Graph;
 
 class FFMpegGraphPlan
 {
