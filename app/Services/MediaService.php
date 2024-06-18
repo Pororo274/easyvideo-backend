@@ -50,20 +50,18 @@ class MediaService implements MediaServiceContract
                 ));
             }
 
-
-
             $absolutePath = Storage::disk('local')->path($media->path);
             File::append($absolutePath, $chunk->get());
 
-            if ($dto->last) {
-                $media = $this->mediaRepo->updateUploadStatusByUuid($dto->mediaUuid, true);
-                $framePath = "previews/" . Str::random() . ".jpg";
-                FFMpegHelper::saveFrameBySeconds($media->path, $framePath, 0);
-                $this->projectRepo->updatePreview(new UpdateProjectPreviewDto(
-                    projectId: $media->project_id,
-                    preview: $framePath
-                ));
-            }
+//            if ($dto->last) {
+//                $media = $this->mediaRepo->updateUploadStatusByUuid($dto->mediaUuid, true);
+//                $framePath = "previews/" . Str::random() . ".jpg";
+//                FFMpegHelper::saveFrameBySeconds($media->path, $framePath, 0);
+//                $this->projectRepo->updatePreview(new UpdateProjectPreviewDto(
+//                    projectId: $media->project_id,
+//                    preview: $framePath
+//                ));
+//            }
 
             return $media;
         });
