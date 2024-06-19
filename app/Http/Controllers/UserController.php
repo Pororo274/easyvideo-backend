@@ -40,17 +40,11 @@ class UserController extends Controller
         $users = $userService->all()->filter(function (User $user) {
             return !collect($user->roles)->contains(UserRoleEnum::ADMIN->value);
         })->map(function (User $user) use ($subscriptionRepo) {
-            try {
-                $subscriptionRepo->findLastActiveByUserId($user->id);
-                $subscription = true;
-            } catch (ModelNotFoundException) {
-                $subscription = false;
-            }
             return [
                 'id' => $user->id,
                 'email' => $user->email,
                 'username' => $user->username,
-                'subscription' => $subscription,
+                'subscription' => false,
                 'createdAt' => $user->created_at
             ];
         });
