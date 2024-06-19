@@ -49,7 +49,7 @@ Route::controller(VirtualMediaController::class)->group(function () {
 });
 
 Route::controller(UserController::class)->prefix('users')->group(function () {
-    Route::get('all', 'App\Http\Controllers\AdminController@getAllUsers');
+    Route::get('all', 'getAllUsers');
     Route::get('{userId}/notifications', 'findAllNotifications');
     Route::post('{userId}/notifications/{notificationId}/mark', 'markAsReadNotification');
     Route::get('{userId}/brief', 'getBriefByUserId');

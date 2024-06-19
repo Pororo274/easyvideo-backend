@@ -30,29 +30,6 @@ class AdminController extends Controller
         ]);
     }
 
-    public function getAllUsers(UserServiceContract $userService, SubscriptionRepositoryContract $subscriptionRepo): JsonResponse
-    {
-        $users = $userService->all()->filter(function (User $user) {
-            return !collect($user->roles)->contains(UserRoleEnum::ADMIN->value);
-        })->map(function (User $user) use ($subscriptionRepo) {
-            try {
-                $subscriptionRepo->findLastActiveByUserId($user->id);
-                $subscription = true;
-            } catch (ModelNotFoundException) {
-                $subscription = false;
-            }
-            return new UserDto(
-                id: $user->id,
-                email: $user->email,
-                username: $user->username,
-                subscription: $subscription,
-                createdAt: $user->created_at
-            );
-        });
-
-        return response()->json($users);
-    }
-
     public function banByUserId(int $userId, UserServiceContract $userService): JsonResponse
     {
         $user = $userService->banByUserId($userId);
