@@ -46,13 +46,13 @@ class UserController extends Controller
             } catch (ModelNotFoundException) {
                 $subscription = false;
             }
-            return new UserDto(
-                id: $user->id,
-                email: $user->email,
-                username: $user->username,
-                subscription: $subscription,
-                createdAt: $user->created_at
-            );
+            return [
+                'id' => $user->id,
+                'email' => $user->email,
+                'username' => $user->username,
+                'subscription' => $subscription,
+                'createdAt' => $user->created_at
+            ];
         });
 
         return response()->json($users);
