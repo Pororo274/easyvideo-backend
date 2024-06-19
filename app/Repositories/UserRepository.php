@@ -50,7 +50,7 @@ class UserRepository implements UserRepositoryContract
 
     public function all(): Collection
     {
-        return User::query()->get();
+        return User::all();
     }
 
     public function banByUserId(int $userId): User
