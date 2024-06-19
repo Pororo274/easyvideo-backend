@@ -49,6 +49,7 @@ Route::controller(VirtualMediaController::class)->group(function () {
 });
 
 Route::controller(UserController::class)->prefix('users')->group(function () {
+    Route::get('all', 'App\Http\Controllers\AdminController@getAllUsers');
     Route::get('{userId}/notifications', 'findAllNotifications');
     Route::post('{userId}/notifications/{notificationId}/mark', 'markAsReadNotification');
     Route::get('{userId}/brief', 'getBriefByUserId');
@@ -80,7 +81,6 @@ Route::controller(SubscriptionController::class)->group(function () {
 
 Route::controller(AdminController::class)->prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('brief', 'getBrief');
-    Route::get('users', 'getAllUsers');
     Route::patch('users/{userId}/ban', 'banByUserId');
     Route::get('folders/{folder}', 'App\Http\Controllers\MediaController@getFilesByFolder');
 });
