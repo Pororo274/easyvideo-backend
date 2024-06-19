@@ -52,6 +52,9 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::get('{userId}/notifications', 'findAllNotifications');
     Route::post('{userId}/notifications/{notificationId}/mark', 'markAsReadNotification');
     Route::get('{userId}/brief', 'getBriefByUserId');
+    Route::middleware('admin')->prefix('{userId}')->group(function () {
+        Route::get('info', 'getUser');
+    });
 });
 
 Route::controller(AuthController::class)->prefix('auth')->group(function () {

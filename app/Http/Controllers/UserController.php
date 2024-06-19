@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Services\UserServiceContract;
 use App\Dto\User\UserBriefDto;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -28,5 +29,12 @@ class UserController extends Controller
     public function getBriefByUserId(int $userId, UserServiceContract $userService): JsonResponse
     {
         return response()->json($userService->getUserBriefByUserId($userId));
+    }
+
+    public function getUser(int $userId): JsonResponse
+    {
+        $user = User::query()->find($userId);
+
+        return response()->json($user);
     }
 }
