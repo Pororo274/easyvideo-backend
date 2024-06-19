@@ -50,7 +50,7 @@ class AdminController extends Controller
             );
         });
 
-        return response()->json($users);
+        return response()->json($users->toArray());
     }
 
     public function banByUserId(int $userId, UserServiceContract $userService): JsonResponse
